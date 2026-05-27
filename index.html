@@ -1092,6 +1092,9 @@ textarea.fi{resize:vertical;min-height:72px;line-height:1.6;}
     <div class="nav-item" data-panel="awards"><span class="nav-icon">🏆</span>이달의 수상자</div>
     <div class="nav-item" data-panel="resigned-members"><span class="nav-icon">🚪</span>지난 SE</div>
 
+    <div class="nav-section">기타</div>
+    <div class="nav-item" data-panel="resources"><span class="nav-icon">📂</span>자료실</div>
+
     <div class="sb-footer">
       <div class="sb-back" onclick="goLanding()">← 메인으로</div>
       <div id="deploy-time" style="font-size:10px;color:var(--dim);margin-top:8px;line-height:1.5;">
@@ -2464,6 +2467,7 @@ function nav(panel, pushHistory = true) {
   if (panel === 'results') { showResultsList(); renderResultsList(); }
   if (panel === 'resigned-members') { loadResignedMembers(); }
   if (panel === 'awards') { if (!awardCurrentMonth) awardCurrentMonth = awardGetYM(); loadAwards(); }
+  if (panel === 'resources') { loadResources(); }
   if (panel === 'editor' && !currentId) openNewModal('exam');
   if (panel === 'members') loadMembers();
 
@@ -6168,6 +6172,208 @@ async function resignMember(id) {
     await loadResignedMembers();
     alert(`${m.name} SE가 퇴사 처리되었습니다.\n지난 SE 탭에서 확인하세요.`);
   } catch(e) { alert('퇴사 처리 실패: ' + e.message); }
+}
+
+// ══════════════════════════════════════
+// 자료실
+// ══════════════════════════════════════
+const RESOURCE_CATEGORIES = ['전체', '제품자료', '교육자료', '공지', '기타'];
+let resourceFilter = '전체';
+let resourcesData = [];
+
+document.querySelector('.main').insertAdjacentHTML('beforeend', `
+  <div id="panel-resources" class="panel">
+    <div class="ph">
+      <div>
+        <div class="ph-title">자료실</div>
+        <div class="ph-sub">파일 업로드 및 링크 공유</div>
+      </div>
+      <button class="btn btn-accent" onclick="openResourceUploadModal()">＋ 자료 추가</button>
+    </div>
+
+    <!-- 카테고리 탭 -->
+    <div class="etabs" style="margin-bottom:20px;" id="resource-cat-tabs">
+      ${RESOURCE_CATEGORIES.map((c,i) => `<div class="etab ${i===0?'active':''}" onclick="setResourceFilter('${c}')">${c}</div>`).join('')}
+    </div>
+
+    <!-- 파일 목록 -->
+    <div id="resource-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;"></div>
+  </div>
+`);
+
+/* ── 자료 업로드 모달 ── */
+document.body.insertAdjacentHTML('beforeend', `
+  <div class="modal-bg" id="resource-modal">
+    <div class="modal" style="width:440px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div class="modal-title">자료 추가</div>
+        <button onclick="closeModalById('resource-modal')" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;">×</button>
+      </div>
+      <div class="fg">
+        <label class="fl">제목</label>
+        <input class="fi" id="res-title" placeholder="자료 제목">
+      </div>
+      <div class="fg">
+        <label class="fl">카테고리</label>
+        <select class="fi" id="res-category">
+          ${RESOURCE_CATEGORIES.filter(c=>c!=='전체').map(c=>`<option value="${c}">${c}</option>`).join('')}
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">설명 <span style="font-weight:400;color:var(--dim);text-transform:none;letter-spacing:0;">(선택)</span></label>
+        <textarea class="fi" id="res-desc" rows="2" placeholder="자료에 대한 간단한 설명"></textarea>
+      </div>
+      <div class="fg">
+        <label class="fl">파일</label>
+        <div style="border:1px solid var(--border);border-radius:var(--r);padding:14px;">
+          <div style="display:flex;gap:8px;margin-bottom:12px;">
+            <button id="res-tab-btn-upload" onclick="setResTab('upload')" style="flex:1;padding:7px;border-radius:var(--rs);border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:12px;cursor:pointer;font-weight:600;">📁 파일 업로드</button>
+            <button id="res-tab-btn-url" onclick="setResTab('url')" style="flex:1;padding:7px;border-radius:var(--rs);border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;">🔗 외부 URL</button>
+          </div>
+          <div id="res-upload-area">
+            <input type="file" id="res-file-input" style="display:none;" onchange="onResFileSelect(this)">
+            <button onclick="document.getElementById('res-file-input').click()" style="width:100%;padding:10px;border:1.5px dashed var(--border);border-radius:var(--rs);background:var(--surface2);color:var(--muted);font-size:13px;cursor:pointer;" id="res-file-btn">＋ 파일 선택</button>
+          </div>
+          <div id="res-url-area" style="display:none;">
+            <input class="fi" id="res-url-input" placeholder="https://..." style="margin:0;">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModalById('resource-modal')">취소</button>
+        <button class="btn btn-accent" onclick="submitResource()">저장</button>
+      </div>
+    </div>
+  </div>
+`);
+
+function openResourceUploadModal() {
+  document.getElementById('res-title').value = '';
+  document.getElementById('res-desc').value = '';
+  document.getElementById('res-url-input').value = '';
+  document.getElementById('res-file-input').value = '';
+  document.getElementById('res-file-btn').textContent = '＋ 파일 선택';
+  window._resPendingFile = null;
+  setResTab('upload');
+  document.getElementById('resource-modal').classList.add('open');
+}
+
+function setResTab(tab) {
+  document.getElementById('res-upload-area').style.display = tab==='upload' ? '' : 'none';
+  document.getElementById('res-url-area').style.display    = tab==='url'    ? '' : 'none';
+  document.getElementById('res-tab-btn-upload').style.cssText = tab==='upload'
+    ? 'flex:1;padding:7px;border-radius:var(--rs);border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:12px;cursor:pointer;font-weight:600;'
+    : 'flex:1;padding:7px;border-radius:var(--rs);border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;';
+  document.getElementById('res-tab-btn-url').style.cssText = tab==='url'
+    ? 'flex:1;padding:7px;border-radius:var(--rs);border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:12px;cursor:pointer;font-weight:600;'
+    : 'flex:1;padding:7px;border-radius:var(--rs);border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;';
+  window._resTab = tab;
+}
+
+function onResFileSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+  window._resPendingFile = file;
+  document.getElementById('res-file-btn').textContent = `📎 ${file.name}`;
+}
+
+async function submitResource() {
+  const title = document.getElementById('res-title').value.trim();
+  if (!title) { alert('제목을 입력해주세요.'); return; }
+  const category = document.getElementById('res-category').value;
+  const desc     = document.getElementById('res-desc').value.trim();
+  const tab      = window._resTab || 'upload';
+  let fileUrl = '', fileName = '';
+
+  if (tab === 'url') {
+    fileUrl = document.getElementById('res-url-input').value.trim();
+    if (!fileUrl) { alert('URL을 입력해주세요.'); return; }
+    fileName = fileUrl.split('/').pop().split('?')[0] || fileUrl;
+  } else {
+    const file = window._resPendingFile;
+    if (!file) { alert('파일을 선택해주세요.'); return; }
+    if (!window.sb) { alert('Supabase 미연결'); return; }
+    const btn = document.getElementById('res-file-btn');
+    btn.textContent = '업로드 중...';
+    const ext  = file.name.split('.').pop();
+    const path = `resources/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error } = await sb.storage.from('sitforest-files').upload(path, file, { upsert: true });
+    if (error) { alert('업로드 실패: ' + error.message); btn.textContent = '＋ 파일 선택'; return; }
+    const { data } = sb.storage.from('sitforest-files').getPublicUrl(path);
+    fileUrl  = data.publicUrl;
+    fileName = file.name;
+  }
+
+  const { error } = await sb.from('resources').insert({ title, description: desc||null, category, file_url: fileUrl, file_name: fileName });
+  if (error) { alert('저장 실패: ' + error.message); return; }
+  closeModalById('resource-modal');
+  await loadResources();
+}
+
+async function loadResources() {
+  if (!window.sb) return;
+  const { data } = await sb.from('resources').select('*').order('created_at', { ascending: false });
+  resourcesData = data || [];
+  renderResourceList();
+}
+
+function setResourceFilter(cat) {
+  resourceFilter = cat;
+  document.querySelectorAll('#resource-cat-tabs .etab').forEach(el => {
+    el.classList.toggle('active', el.textContent === cat);
+  });
+  renderResourceList();
+}
+
+function renderResourceList() {
+  const list = document.getElementById('resource-list');
+  if (!list) return;
+  const filtered = resourceFilter === '전체' ? resourcesData : resourcesData.filter(r => r.category === resourceFilter);
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">📭</div>자료가 없습니다.</div>`;
+    return;
+  }
+  list.innerHTML = filtered.map(r => {
+    const isImage = /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(r.file_url);
+    const isPdf   = /\.pdf(\?|$)/i.test(r.file_url);
+    const icon    = isImage ? '🖼️' : isPdf ? '📄' : '🔗';
+    const date    = r.created_at ? new Date(r.created_at).toLocaleDateString('ko-KR') : '';
+    return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <span style="font-size:22px;flex-shrink:0;">${icon}</span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:600;font-size:14px;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.title}</div>
+          ${r.description ? `<div style="font-size:12px;color:var(--muted);line-height:1.5;">${r.description}</div>` : ''}
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:var(--surface2);color:var(--muted);font-weight:600;">${r.category||'일반'}</span>
+        <span style="font-size:11px;color:var(--dim);margin-left:auto;">${date}</span>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:4px;">
+        <a href="${r.file_url}" target="_blank" class="btn btn-sm btn-outline" style="flex:1;text-align:center;text-decoration:none;">열람</a>
+        <button class="btn btn-sm btn-outline" onclick="copyResLink('${r.file_url}')" style="flex:1;">링크 복사</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteResource('${r.id}')">삭제</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function copyResLink(url) {
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = '✓ 복사됨';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+async function deleteResource(id) {
+  if (!confirm('이 자료를 삭제하시겠습니까?')) return;
+  if (!window.sb) return;
+  const { error } = await sb.from('resources').delete().eq('id', id);
+  if (error) { alert('삭제 실패: ' + error.message); return; }
+  await loadResources();
 }
 
 // ── 퇴사 SE 목록 로드 ──
