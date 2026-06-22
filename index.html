@@ -7525,6 +7525,7 @@ async function loadExamsFromDB() {
           linearMin: q.linear_min ?? undefined,
           linearMax: q.linear_max ?? undefined,
           starMax: q.star_max || undefined,
+          desc:           q.description || '',
           attachmentUrl:  q.attachment_url || '',
           attachmentName: q.attachment_name || '',
         }))
@@ -7631,6 +7632,7 @@ async function saveItemToDB(item) {
         linear_min: q.linearMin ?? null,
         linear_max: q.linearMax ?? null,
         star_max: q.starMax || null,
+        description:     q.desc || null,
         attachment_url:  q.attachmentUrl || null,
         attachment_name: q.attachmentName || null,
       });
