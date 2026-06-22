@@ -3045,7 +3045,7 @@ function qItemHTML(q, i, mode) {
     </select>
   </div>`;
 
-  let body = typeSelector + `<div class="fg"><label class="fl">문제</label><textarea class="fi" rows="2" onchange="updateQ('${q.id}','text',this.value)">${q.text||''}</textarea></div><div class="fg"><label class="fl">보충 설명 <span style="font-weight:400;color:var(--dim);text-transform:none;letter-spacing:0;">(선택 — 응시자에게 표시)</span></label><textarea class="fi" rows="2" placeholder="문항에 대한 추가 설명, 조건, 힌트 등을 입력하세요" onchange="updateQ('${q.id}','desc',this.value)">${q.desc||''}</textarea></div>`;
+  let body = typeSelector + `<div class="fg"><label class="fl">문제</label><textarea class="fi" rows="2" onchange="updateQ('${q.id}','text',this.value)">${q.text||''}</textarea></div><div class="fg"><label class="fl">보충 설명 <span style="font-weight:400;color:var(--dim);text-transform:none;letter-spacing:0;">(선택 — 응시자에게 표시)</span></label><textarea class="fi" rows="2" placeholder="문항에 대한 추가 설명, 조건, 힌트 등을 입력하세요" oninput="updateQ('${q.id}','desc',this.value)">${q.desc||''}</textarea></div>`;
 
   if (q.type==='multiple') {
     body += `<div class="fg"><label class="fl">보기${mode==='exam'?' (번호 클릭 = 정답)':''}</label><div class="options-editor">` +
