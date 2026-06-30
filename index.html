@@ -1647,6 +1647,7 @@ document.querySelector('.main').insertAdjacentHTML('beforeend', `
         <button class="btn btn-outline btn-sm" onclick="openMemberColumnSettings()">⚙ 항목 관리</button>
         <button class="btn btn-outline btn-sm" onclick="openSessionManager()">📋 회고 세션 관리</button>
         <button class="btn btn-outline btn-sm" onclick="openCopyModal()">📋 선택 복사</button>
+        <button class="btn btn-outline btn-sm" onclick="printMemberTable()">🖨️ 인쇄</button>
         <button class="btn btn-outline btn-sm" onclick="exportMembersExcel()">📥 엑셀 내보내기</button>
         <button class="btn btn-outline btn-sm" onclick="openStoreMemberReport()" style="border-color:var(--accent);color:var(--accent);">🏪 매장별 리포트</button>
         <button class="btn btn-outline btn-sm" onclick="document.getElementById('member-excel-input').click()">📤 엑셀 업로드</button>
@@ -6012,6 +6013,29 @@ function executeExportExcel() {
   XLSX.utils.book_append_sheet(wb, ws, 'SE 목록');
   XLSX.writeFile(wb, `SE_목록_${new Date().toLocaleDateString('ko-KR').replace(/\. /g,'-').replace('.','')}`.replace(/ /g,'') + '.xlsx');
   closeModalById('copy-modal');
+}
+
+function printMemberTable() {
+  const tableEl = document.getElementById('member-table');
+  if (!tableEl) return;
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>SE 명단</title>
+<style>
+  body { font-family: 'Malgun Gothic', sans-serif; font-size: 12px; margin: 20px; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #ccc; padding: 5px 8px; text-align: left; white-space: nowrap; }
+  th { background: #f0f0f0; font-weight: bold; }
+  tr:nth-child(even) td { background: #fafafa; }
+  h2 { margin-bottom: 10px; font-size: 15px; }
+</style></head><body>
+<h2>SE 명단 (${new Date().toLocaleDateString('ko-KR')})</h2>
+${tableEl.outerHTML}
+</body></html>`;
+  const w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  w.print();
+  w.close();
 }
 
 function exportMembersExcel() {
