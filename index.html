@@ -6029,13 +6029,12 @@ function printMemberTable() {
 </style></head><body>
 <h2>SE 명단 (${new Date().toLocaleDateString('ko-KR')})</h2>
 ${tableEl.outerHTML}
+<script>window.onload = function(){ window.print(); }<\/script>
 </body></html>`;
   const w = window.open('', '_blank');
+  if (!w) { alert('팝업이 차단됐습니다. 브라우저에서 팝업을 허용해주세요.'); return; }
   w.document.write(html);
   w.document.close();
-  w.focus();
-  w.print();
-  w.close();
 }
 
 function exportMembersExcel() {
