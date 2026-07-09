@@ -7620,8 +7620,16 @@ async function syncLocalToDB() {
 }
 
 // ── 시험 저장 (DB + 로컬) ──
+const _dbSaveLock = {};   // key: item.id, value: true if saving
+const _dbSavePending = {}; // key: item.id, value: latest pending item
+
 async function saveItemToDB(item) {
   if (!window.sb) return;
+  if (_dbSaveLock[item.id]) {
+    _dbSavePending[item.id] = item;
+    return;
+  }
+  _dbSaveLock[item.id] = true;
   try {
     await sb.from('sidiz_exams').upsert({
       id: item.id,
@@ -7676,6 +7684,13 @@ async function saveItemToDB(item) {
     console.log('✅ 시험 저장 완료:', item.title);
   } catch (err) {
     console.warn('DB 저장 실패:', err.message);
+  } finally {
+    delete _dbSaveLock[item.id];
+    if (_dbSavePending[item.id]) {
+      const next = _dbSavePending[item.id];
+      delete _dbSavePending[item.id];
+      saveItemToDB(next);
+    }
   }
 }
 
