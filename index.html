@@ -2686,6 +2686,7 @@ function cardHTML(item) {
     </div>
     <div class="ec-actions">
       <button class="btn btn-xs btn-outline" onclick="event.stopPropagation();editItem('${item.id}')">편집</button>
+      <button class="btn btn-xs btn-outline" onclick="event.stopPropagation();renameItem('${item.id}')">이름 변경</button>
       <button class="btn btn-xs btn-outline" onclick="event.stopPropagation();previewExaminee('${item.id}')">${item.mode === 'survey' ? '설문하기' : '시험보기'}</button>
       <button class="btn btn-xs btn-outline" onclick="event.stopPropagation();openShare('${item.id}')">공유</button>
       <button class="btn btn-xs btn-outline" style="color:var(--accent2);border-color:rgba(96,196,240,.3);" onclick="event.stopPropagation();goToResult('${item.id}')">결과보기</button>
@@ -2695,6 +2696,18 @@ function cardHTML(item) {
   </div>`;
 }
 
+
+// ── 시험/설문 이름 변경 ──
+async function renameItem(id) {
+  const item = items.find(i => i.id === id);
+  if (!item) return;
+  const newTitle = prompt('새 이름을 입력하세요:', item.title);
+  if (!newTitle || newTitle.trim() === item.title) return;
+  item.title = newTitle.trim();
+  save();
+  await saveItemToDB(item);
+  renderAll();
+}
 
 // ── 시험/설문 복제 ──
 async function duplicateItem(id) {
