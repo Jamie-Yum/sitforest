@@ -1485,29 +1485,6 @@ document.querySelector('.main').insertAdjacentHTML('beforeend', `
       </div>
     </div>
 
-    <!-- 이달의 리뷰어 -->
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-      <div style="width:26px;height:26px;border-radius:6px;background:#1a3a5c;display:flex;align-items:center;justify-content:center;font-size:13px;">💬</div>
-      <span style="font-size:13px;font-weight:600;color:var(--text);">이달의 리뷰어</span>
-    </div>
-    <div style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:20px;">
-      <table class="rtable" id="award-reviewer-table" style="width:100%;border-collapse:collapse;font-size:13px;">
-        <thead>
-          <tr>
-            <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);width:110px;">이름</th>
-            <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);width:90px;">매장</th>
-            <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);width:120px;">휴대폰</th>
-            <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);">사유 / 코멘트</th>
-            <th style="padding:8px 12px;width:36px;border-bottom:1px solid var(--border);"></th>
-          </tr>
-        </thead>
-        <tbody id="award-reviewer-tbody"></tbody>
-      </table>
-      <div style="padding:8px 12px;">
-        <button onclick="openAwardAddModal('reviewer')" style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);background:none;border:1px dashed var(--border);border-radius:var(--rs);padding:6px 14px;cursor:pointer;width:100%;">＋ 수상자 추가</button>
-      </div>
-    </div>
-
     <!-- 이달의 회고왕 -->
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
       <div style="width:26px;height:26px;border-radius:6px;background:#0f3d2e;display:flex;align-items:center;justify-content:center;font-size:13px;">🔄</div>
@@ -1528,6 +1505,29 @@ document.querySelector('.main').insertAdjacentHTML('beforeend', `
       </table>
       <div style="padding:8px 12px;">
         <button onclick="openAwardAddModal('retrospector')" style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);background:none;border:1px dashed var(--border);border-radius:var(--rs);padding:6px 14px;cursor:pointer;width:100%;">＋ 수상자 추가</button>
+      </div>
+    </div>
+
+    <!-- 이달의 리뷰어 -->
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <div style="width:26px;height:26px;border-radius:6px;background:#1a3a5c;display:flex;align-items:center;justify-content:center;font-size:13px;">💬</div>
+      <span style="font-size:13px;font-weight:600;color:var(--text);">이달의 리뷰어</span>
+    </div>
+    <div style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:20px;">
+      <table class="rtable" id="award-reviewer-table" style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr>
+            <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);width:110px;">이름</th>
+            <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);width:90px;">매장</th>
+            <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);width:120px;">휴대폰</th>
+            <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);">사유 / 코멘트</th>
+            <th style="padding:8px 12px;width:36px;border-bottom:1px solid var(--border);"></th>
+          </tr>
+        </thead>
+        <tbody id="award-reviewer-tbody"></tbody>
+      </table>
+      <div style="padding:8px 12px;">
+        <button onclick="openAwardAddModal('reviewer')" style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);background:none;border:1px dashed var(--border);border-radius:var(--rs);padding:6px 14px;cursor:pointer;width:100%;">＋ 수상자 추가</button>
       </div>
     </div>
 
