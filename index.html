@@ -1485,38 +1485,39 @@ document.querySelector('.main').insertAdjacentHTML('beforeend', `
       </div>
     </div>
 
-    <!-- 이달의 수상자 3열 -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+    <!-- 이달의 수상자 - 회고왕/리뷰어 2열 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
       <!-- 회고왕 -->
       <div style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-bottom:1px solid var(--border);background:var(--surface2);">
-          <span style="font-size:12px;font-weight:600;color:var(--text);">🔄 이달의 회고왕</span>
-          <button onclick="openAwardAddModal('retrospector')" style="font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:4px;padding:1px 7px;cursor:pointer;">＋</button>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--surface2);">
+          <span style="font-size:13px;font-weight:600;color:var(--text);">🔄 이달의 회고왕</span>
+          <button onclick="openAwardAddModal('retrospector')" style="font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:4px;padding:2px 9px;cursor:pointer;">＋</button>
         </div>
-        <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:13px;">
           <tbody id="award-retro-tbody"></tbody>
         </table></div>
       </div>
       <!-- 리뷰어 -->
       <div style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-bottom:1px solid var(--border);background:var(--surface2);">
-          <span style="font-size:12px;font-weight:600;color:var(--text);">💬 이달의 리뷰어</span>
-          <button onclick="openAwardAddModal('reviewer')" style="font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:4px;padding:1px 7px;cursor:pointer;">＋</button>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--surface2);">
+          <span style="font-size:13px;font-weight:600;color:var(--text);">💬 이달의 리뷰어</span>
+          <button onclick="openAwardAddModal('reviewer')" style="font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:4px;padding:2px 9px;cursor:pointer;">＋</button>
         </div>
-        <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:13px;">
           <tbody id="award-reviewer-tbody"></tbody>
         </table></div>
       </div>
-      <!-- SEAT -->
-      <div style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-bottom:1px solid var(--border);background:var(--surface2);">
-          <span style="font-size:12px;font-weight:600;color:var(--text);">🪑 SEAT 우수자</span>
-          <button onclick="openAwardAddModal('seat')" style="font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:4px;padding:1px 7px;cursor:pointer;">＋</button>
-        </div>
-        <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;">
-          <tbody id="award-seat-tbody"></tbody>
-        </table></div>
+    </div>
+
+    <!-- SEAT 우수자 - 작게 -->
+    <div style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);background:var(--surface2);">
+        <span style="font-size:11px;font-weight:600;color:var(--muted);">🪑 SEAT 우수자</span>
+        <button onclick="openAwardAddModal('seat')" style="font-size:10px;color:var(--dim);background:none;border:1px solid var(--border);border-radius:4px;padding:1px 6px;cursor:pointer;">＋</button>
       </div>
+      <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:11px;">
+        <tbody id="award-seat-tbody"></tbody>
+      </table></div>
     </div>
 
     <!-- 상품 입력 2열 -->
