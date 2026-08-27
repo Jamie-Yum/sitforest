@@ -1458,20 +1458,43 @@ document.querySelector('.main').insertAdjacentHTML('beforeend', `
     </div>
     <div style="font-size:11px;color:#e05555;margin-top:-14px;margin-bottom:20px;">● 빨간색으로 표시된 인원은 퇴사자입니다</div>
 
-    <!-- 매장별 수상 종합 -->
-    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;">매장별 수상 종합</div>
-    <div class="rtable-wrap" style="overflow-x:auto;margin-bottom:28px;">
-      <table class="rtable" id="award-store-table" style="width:100%;border-collapse:collapse;font-size:13px;">
-        <thead>
-          <tr>
-            <th style="padding:8px 12px;text-align:left;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);">매장</th>
-            <th style="padding:8px 12px;text-align:center;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);">리뷰어</th>
-            <th style="padding:8px 12px;text-align:center;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);">회고왕</th>
-            <th style="padding:8px 12px;text-align:center;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);">합계</th>
-          </tr>
-        </thead>
-        <tbody id="award-store-tbody"></tbody>
-      </table>
+    <!-- 매장별/개인별 수상 종합 2열 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+      <!-- 매장별 -->
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">매장별 수상 종합</div>
+        <div style="overflow-x:auto;border:1px solid var(--border);border-radius:var(--r);">
+          <table class="rtable" id="award-store-table" style="width:100%;border-collapse:collapse;font-size:11px;">
+            <thead>
+              <tr>
+                <th style="padding:5px 8px;text-align:left;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);">매장</th>
+                <th style="padding:5px 8px;text-align:center;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);">리뷰어</th>
+                <th style="padding:5px 8px;text-align:center;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);">회고왕</th>
+                <th style="padding:5px 8px;text-align:center;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);">합계</th>
+              </tr>
+            </thead>
+            <tbody id="award-store-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- 개인별 -->
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">개인별 수상 합계</div>
+        <div style="overflow-x:auto;border:1px solid var(--border);border-radius:var(--r);">
+          <table class="rtable" id="award-person-table" style="width:100%;border-collapse:collapse;font-size:11px;">
+            <thead>
+              <tr>
+                <th style="padding:5px 8px;text-align:left;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);">이름</th>
+                <th style="padding:5px 8px;text-align:left;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);">매장</th>
+                <th style="padding:5px 8px;text-align:center;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);">리뷰어</th>
+                <th style="padding:5px 8px;text-align:center;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);">회고왕</th>
+                <th style="padding:5px 8px;text-align:center;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);">합계</th>
+              </tr>
+            </thead>
+            <tbody id="award-person-tbody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <hr style="border:none;border-top:1px solid var(--border);margin-bottom:24px;">
@@ -3664,11 +3687,33 @@ function renderAwardPanel() {
     const stores = Object.entries(storeMap).sort((a,b) => (b[1].reviewer+b[1].retrospector)-(a[1].reviewer+a[1].retrospector));
     storeTbody.innerHTML = stores.length ? stores.map(([store, cnt]) => `
       <tr>
-        <td style="padding:10px 12px;">${store}</td>
-        <td style="padding:10px 12px;text-align:center;">${cnt.reviewer||0}</td>
-        <td style="padding:10px 12px;text-align:center;">${cnt.retrospector||0}</td>
-        <td style="padding:10px 12px;text-align:center;font-weight:600;">${cnt.reviewer+cnt.retrospector}</td>
-      </tr>`).join('') : `<tr><td colspan="4" style="padding:14px 12px;text-align:center;color:var(--dim);font-size:12px;">데이터 없음</td></tr>`;
+        <td style="padding:5px 8px;">${store}</td>
+        <td style="padding:5px 8px;text-align:center;">${cnt.reviewer||0}</td>
+        <td style="padding:5px 8px;text-align:center;">${cnt.retrospector||0}</td>
+        <td style="padding:5px 8px;text-align:center;font-weight:600;">${cnt.reviewer+cnt.retrospector}</td>
+      </tr>`).join('') : `<tr><td colspan="4" style="padding:10px 8px;text-align:center;color:var(--dim);font-size:11px;">데이터 없음</td></tr>`;
+  }
+
+  // 개인별 수상 합계
+  const personMap = {};
+  awardAllData.forEach(a => {
+    if (a.award_type === 'seat') return;
+    const key = a.member_name;
+    if (!personMap[key]) personMap[key] = { store: a.store||'', reviewer:0, retrospector:0 };
+    if (a.award_type==='reviewer') personMap[key].reviewer++;
+    if (a.award_type==='retrospector') personMap[key].retrospector++;
+  });
+  const personTbody = document.getElementById('award-person-tbody');
+  if (personTbody) {
+    const persons = Object.entries(personMap).sort((a,b) => (b[1].reviewer+b[1].retrospector)-(a[1].reviewer+a[1].retrospector));
+    personTbody.innerHTML = persons.length ? persons.map(([name, cnt]) => `
+      <tr>
+        <td style="padding:5px 8px;white-space:nowrap;">${name}</td>
+        <td style="padding:5px 8px;color:var(--muted);white-space:nowrap;">${cnt.store}</td>
+        <td style="padding:5px 8px;text-align:center;">${cnt.reviewer||0}</td>
+        <td style="padding:5px 8px;text-align:center;">${cnt.retrospector||0}</td>
+        <td style="padding:5px 8px;text-align:center;font-weight:600;">${cnt.reviewer+cnt.retrospector}</td>
+      </tr>`).join('') : `<tr><td colspan="5" style="padding:10px 8px;text-align:center;color:var(--dim);font-size:11px;">데이터 없음</td></tr>`;
   }
 }
 
