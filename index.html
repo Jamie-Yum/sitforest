@@ -5218,13 +5218,14 @@ function renderQ() {
     const selectedIdx = answers[String(q.id)];
     const etcIdx = q.options.findIndex(o => o.trim() === '기타');
     const etcVal = answers[String(q.id)+'_etc'] || '';
-    inputHTML=`<div class="opts" data-etc-idx="${etcIdx}">`+order.map((origIdx,di)=>{
+    const showEtcInit = etcIdx !== -1 && selectedIdx === etcIdx;
+    inputHTML=`<div class="opts" data-etc-idx="${etcIdx}" data-qid="${q.id}">`+order.map((origIdx,di)=>{
       const isSel = selectedIdx===origIdx;
       return `<button class="opt ${isSel?'sel'+surveyClass:''}" onclick="selectOpt(this,${origIdx})">
         <span class="opt-n">${di+1}</span><span>${q.options[origIdx]}</span>
       </button>`;
-    }).join('')+(etcIdx!==-1?`<input class="etc-input fi" id="etc-${q.id}" type="text" placeholder="기타 내용을 입력해주세요" value="${etcVal}" style="display:${selectedIdx===etcIdx?'block':'none'};margin-top:8px;" oninput="answers['${q.id}_etc']=this.value;updateDots()">`:'')
-    +`</div>`;
+    }).join('')+`</div>`
+    +(showEtcInit ? `<input class="etc-input fi" data-qid="${q.id}" type="text" placeholder="기타 내용을 입력해주세요" value="${etcVal}" style="width:100%;margin-top:8px;box-sizing:border-box;" oninput="answers['${q.id}_etc']=this.value;updateDots()">` : '');
 
   } else if (q.type==='checkbox') {
     const sel = answers[String(q.id)] || [];
@@ -5482,12 +5483,25 @@ function selectOpt(el,origIdx) {
   answers[String(qId)] = origIdx; updateDots();
   const optsDiv = el.closest('.opts');
   const etcIdx = parseInt(optsDiv?.dataset?.etcIdx ?? '-1');
-  const etcInput = optsDiv?.querySelector('.etc-input');
-  if (etcInput && etcIdx !== -1) {
+  if (etcIdx !== -1) {
     const isEtc = origIdx === etcIdx;
-    etcInput.style.display = isEtc ? 'block' : 'none';
-    if (!isEtc) { answers[String(qId)+'_etc'] = ''; etcInput.value = ''; }
-    if (isEtc) setTimeout(()=>etcInput.focus(), 50);
+    // etc-input은 .opts 바로 다음 sibling으로 관리 (flex 컨테이너 밖)
+    let etcInput = optsDiv.nextElementSibling?.classList?.contains('etc-input') ? optsDiv.nextElementSibling : null;
+    if (isEtc) {
+      if (!etcInput) {
+        etcInput = document.createElement('input');
+        etcInput.className = 'etc-input fi';
+        etcInput.type = 'text';
+        etcInput.placeholder = '기타 내용을 입력해주세요';
+        etcInput.style.cssText = 'width:100%;margin-top:8px;box-sizing:border-box;';
+        etcInput.oninput = () => { answers[String(qId)+'_etc'] = etcInput.value; updateDots(); };
+        optsDiv.parentNode.insertBefore(etcInput, optsDiv.nextSibling);
+      }
+      etcInput.value = answers[String(qId)+'_etc'] || '';
+      setTimeout(() => etcInput.focus(), 50);
+    } else {
+      if (etcInput) { answers[String(qId)+'_etc'] = ''; etcInput.remove(); }
+    }
   }
 }
 function selectOX(el,val) {
