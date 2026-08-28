@@ -5441,7 +5441,7 @@ function selectOpt(el,origIdx) {
   // 기타 입력창 처리
   const etcInput = el.closest('.opts').querySelector('.etc-input');
   if (etcInput) {
-    const isEtc = el.querySelector('span:last-child')?.textContent === '기타';
+    const isEtc = el.querySelector('span:last-of-type')?.textContent.trim() === '기타';
     etcInput.style.display = isEtc ? 'block' : 'none';
     if (!isEtc) { answers[String(qId)+'_etc'] = ''; etcInput.value = ''; }
     if (isEtc) setTimeout(()=>etcInput.focus(), 50);
