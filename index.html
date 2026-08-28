@@ -5178,7 +5178,7 @@ function renderQ() {
     const order = shuffledOpts[q.id] || q.options.map((_,i)=>i);
     const surveyClass = isSurvey ? ' survey' : '';
     const selectedIdx = answers[String(q.id)];
-    const etcIdx = q.options.findIndex(o => o === '기타');
+    const etcIdx = q.options.findIndex(o => o.trim() === '기타');
     const etcVal = answers[String(q.id)+'_etc'] || '';
     inputHTML=`<div class="opts">`+order.map((origIdx,di)=>{
       const isSel = selectedIdx===origIdx;
@@ -5190,12 +5190,16 @@ function renderQ() {
 
   } else if (q.type==='checkbox') {
     const sel = answers[String(q.id)] || [];
+    const etcIdxCb = (q.options||[]).findIndex(o => o.trim() === '기타');
+    const etcValCb = answers[String(q.id)+'_etc'] || '';
+    const etcSelCb = Array.isArray(sel) && etcIdxCb !== -1 && sel.includes(etcIdxCb);
     inputHTML=`<div class="check-opts">`+(q.options||[]).map((o,oi)=>{
       const isSel = Array.isArray(sel) && sel.includes(oi);
       return `<button class="check-opt ${isSel?'sel':''}" onclick="selectCheck(this,${oi},'${q.id}')">
         <span class="check-box">${isSel?'✓':''}</span><span>${o}</span>
       </button>`;
-    }).join('')+`</div>`;
+    }).join('')+(etcIdxCb!==-1?`<input class="etc-input-cb fi" id="etc-${q.id}" type="text" placeholder="기타 내용을 입력해주세요" value="${etcValCb}" style="display:${etcSelCb?'block':'none'};margin-top:8px;" oninput="answers['${q.id}_etc']=this.value;updateDots()">`:'')
+    +`</div>`;
 
   } else if (q.type==='dropdown') {
     const sel = answers[String(q.id)]??'';
@@ -5466,6 +5470,15 @@ function selectCheck(el, oi, qid) {
   answers[String(qid)] = sel;
   el.classList.toggle('sel', sel.includes(oi));
   el.querySelector('.check-box').textContent = sel.includes(oi) ? '✓' : '';
+  const q = activeItem.questions[currentQ];
+  const etcIdxCb = q.options ? q.options.findIndex(o => o.trim() === '기타') : -1;
+  const etcInput = el.closest('.check-opts')?.querySelector('.etc-input-cb');
+  if (etcInput && etcIdxCb !== -1) {
+    const isEtcSel = sel.includes(etcIdxCb);
+    etcInput.style.display = isEtcSel ? 'block' : 'none';
+    if (!isEtcSel) { answers[String(qid)+'_etc'] = ''; etcInput.value = ''; }
+    if (isEtcSel && oi === etcIdxCb) setTimeout(()=>etcInput.focus(), 50);
+  }
   updateDots();
 }
 function selectLinear(el, n, qid) {
