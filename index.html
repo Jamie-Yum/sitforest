@@ -5180,7 +5180,7 @@ function renderQ() {
     const selectedIdx = answers[String(q.id)];
     const etcIdx = q.options.findIndex(o => o.trim() === '기타');
     const etcVal = answers[String(q.id)+'_etc'] || '';
-    inputHTML=`<div class="opts">`+order.map((origIdx,di)=>{
+    inputHTML=`<div class="opts" data-etc-idx="${etcIdx}">`+order.map((origIdx,di)=>{
       const isSel = selectedIdx===origIdx;
       return `<button class="opt ${isSel?'sel'+surveyClass:''}" onclick="selectOpt(this,${origIdx})">
         <span class="opt-n">${di+1}</span><span>${q.options[origIdx]}</span>
@@ -5442,11 +5442,11 @@ function selectOpt(el,origIdx) {
   el.querySelector('.opt-n').style.color = '#fff';
   const qId = activeItem.questions[currentQ].id;
   answers[String(qId)] = origIdx; updateDots();
-  const etcInput = el.closest('.opts').querySelector('.etc-input');
-  if (etcInput) {
-    const q = activeItem.questions[currentQ];
-    const etcIdx = q.options ? q.options.findIndex(o => o.trim() === '기타') : -1;
-    const isEtc = etcIdx !== -1 && origIdx === etcIdx;
+  const optsDiv = el.closest('.opts');
+  const etcIdx = parseInt(optsDiv?.dataset?.etcIdx ?? '-1');
+  const etcInput = optsDiv?.querySelector('.etc-input');
+  if (etcInput && etcIdx !== -1) {
+    const isEtc = origIdx === etcIdx;
     etcInput.style.display = isEtc ? 'block' : 'none';
     if (!isEtc) { answers[String(qId)+'_etc'] = ''; etcInput.value = ''; }
     if (isEtc) setTimeout(()=>etcInput.focus(), 50);
