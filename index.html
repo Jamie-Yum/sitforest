@@ -5438,10 +5438,11 @@ function selectOpt(el,origIdx) {
   el.querySelector('.opt-n').style.color = '#fff';
   const qId = activeItem.questions[currentQ].id;
   answers[String(qId)] = origIdx; updateDots();
-  // 기타 입력창 처리
   const etcInput = el.closest('.opts').querySelector('.etc-input');
   if (etcInput) {
-    const isEtc = el.querySelector('span:last-of-type')?.textContent.trim() === '기타';
+    const q = activeItem.questions[currentQ];
+    const etcIdx = q.options ? q.options.findIndex(o => o.trim() === '기타') : -1;
+    const isEtc = etcIdx !== -1 && origIdx === etcIdx;
     etcInput.style.display = isEtc ? 'block' : 'none';
     if (!isEtc) { answers[String(qId)+'_etc'] = ''; etcInput.value = ''; }
     if (isEtc) setTimeout(()=>etcInput.focus(), 50);
