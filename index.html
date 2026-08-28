@@ -321,23 +321,39 @@ textarea.fi{resize:vertical;min-height:72px;line-height:1.6;}
 
 /* ══ QUESTION EDITOR ══ */
 .q-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
-.q-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
-.q-item-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;}
+.q-item{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .15s,box-shadow .15s;}
+.q-item:hover{box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.q-item.open{border-color:var(--accent);box-shadow:0 3px 16px rgba(53,127,255,.1);}
+.q-item-header{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;user-select:none;}
 .q-item-header:hover{background:var(--surface2);}
 .q-drag{color:var(--dim);font-size:14px;}
 .q-num-b{width:26px;height:26px;background:var(--surface2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--muted);flex-shrink:0;}
-.q-preview{flex:1;font-size:13.5px;font-weight:500;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
-.q-type-tag{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--surface2);color:var(--muted);flex-shrink:0;}
-.q-score-tag{font-size:12px;color:var(--muted);flex-shrink:0;}
+.q-item.open .q-num-b{background:var(--accent);color:#fff;}
+.q-preview{flex:1;font-size:13.5px;font-weight:500;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--text);}
+.q-preview.empty{color:var(--dim);font-style:italic;}
+.q-type-tag{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--surface2);color:var(--muted);flex-shrink:0;border:1px solid var(--border);}
+.q-score-tag{font-size:11px;padding:2px 7px;border-radius:20px;background:rgba(53,127,255,.1);color:var(--accent);font-weight:700;flex-shrink:0;}
 .q-chevron{color:var(--muted);font-size:12px;transition:transform .2s;flex-shrink:0;}
 .q-item.open .q-chevron{transform:rotate(180deg);}
-.q-body{display:none;padding:16px;border-top:1px solid var(--border);background:var(--surface2);}
+.q-body{display:none;padding:20px;border-top:1.5px solid var(--border);background:var(--surface2);}
 .q-item.open .q-body{display:block;}
+.q-hdr-actions{display:flex;align-items:center;gap:4px;opacity:0;transition:opacity .15s;flex-shrink:0;}
+.q-item-header:hover .q-hdr-actions{opacity:1;}
+.q-hdr-btn{padding:3px 9px;border-radius:var(--rs);border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:11px;cursor:pointer;font-family:'Pretendard',sans-serif;transition:all .12s;}
+.q-hdr-btn:hover{color:var(--text);border-color:var(--muted);}
+.q-hdr-btn.danger:hover{color:var(--accent3);border-color:var(--accent3);}
+.req-badge{font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(240,96,96,.12);color:#e05555;font-weight:700;flex-shrink:0;}
+
+.type-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.type-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:'Pretendard',sans-serif;cursor:pointer;transition:all .12s;white-space:nowrap;}
+.type-chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(53,127,255,.05);}
+.type-chip.active{border-color:var(--accent);background:var(--accent);color:#fff;font-weight:600;}
 
 .options-editor{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
 .opt-row{display:flex;align-items:center;gap:8px;}
-.opt-label{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;cursor:pointer;transition:all .15s;}
-.opt-label.correct{border-color:var(--accent);color:var(--accent);background:rgba(53,127,255,.1);}
+.opt-label{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;cursor:pointer;transition:all .15s;}
+.opt-label.correct{border-color:var(--accent);color:#fff;background:var(--accent);}
+.opt-row .fi{flex:1;}
 
 .add-q-bar{display:flex;flex-direction:column;gap:10px;}
 .add-q-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
@@ -3025,62 +3041,72 @@ function renderQList(qs, mode) {
 }
 
 function qItemHTML(q, i, mode) {
-  const typeLabel = {
-    multiple:'객관식', ox:'OX', short:'단답형', essay:'서술형', scale:'척도',
-    checkbox:'체크박스', dropdown:'드롭다운', linear:'선형 배율', star:'등급(별점)',
-    grid:'객관식 그리드', checkgrid:'체크박스 그리드', date:'날짜', time:'시간', file:'파일 업로드'
-  }[q.type] || q.type;
-
-  const allTypes = mode === 'exam'
-    ? ['multiple','ox','short','essay']
-    : ['multiple','checkbox','dropdown','scale','linear','star','grid','checkgrid','short','essay','date','time','file'];
   const typeNames = {
     multiple:'객관식', ox:'OX', short:'단답형', essay:'서술형', scale:'척도',
     checkbox:'체크박스', dropdown:'드롭다운', linear:'선형 배율', star:'등급(별점)',
     grid:'객관식 그리드', checkgrid:'체크박스 그리드', date:'날짜', time:'시간', file:'파일 업로드'
   };
-  const typeSelector = `<div class="fg" style="margin-bottom:12px;">
+  const typeIcons = {
+    multiple:'ti-circle-dot', ox:'ti-circle-letter-o', short:'ti-text-size', essay:'ti-align-left',
+    scale:'ti-adjustments-horizontal', checkbox:'ti-checkbox', dropdown:'ti-selector',
+    linear:'ti-trending-up', star:'ti-star', grid:'ti-layout-grid', checkgrid:'ti-layout-grid',
+    date:'ti-calendar', time:'ti-clock', file:'ti-upload'
+  };
+  const typeLabel = typeNames[q.type] || q.type;
+
+  const allTypes = mode === 'exam'
+    ? ['multiple','ox','short','essay']
+    : ['multiple','checkbox','dropdown','scale','linear','star','grid','checkgrid','short','essay','date','time','file'];
+
+  const typeSelector = `<div class="fg" style="margin-bottom:16px;">
     <label class="fl">문항 유형</label>
-    <select class="fi" style="width:auto;" onchange="changeQType('${q.id}', this.value)">
-      ${allTypes.map(t => `<option value="${t}" ${q.type===t?'selected':''}>${typeNames[t]}</option>`).join('')}
-    </select>
+    <div class="type-chips">
+      ${allTypes.map(t => `<button class="type-chip ${q.type===t?'active':''}" onclick="changeQType('${q.id}','${t}')"><i class="ti ${typeIcons[t]||''}"></i>${typeNames[t]}</button>`).join('')}
+    </div>
   </div>`;
 
-  let body = typeSelector + `<div class="fg"><label class="fl">문제</label><textarea class="fi" rows="2" onchange="updateQ('${q.id}','text',this.value)">${q.text||''}</textarea></div><div class="fg"><label class="fl">보충 설명 <span style="font-weight:400;color:var(--dim);text-transform:none;letter-spacing:0;">(선택 — 응시자에게 표시)</span></label><textarea class="fi" rows="2" placeholder="문항에 대한 추가 설명, 조건, 힌트 등을 입력하세요" oninput="updateQ('${q.id}','desc',this.value)">${q.desc||''}</textarea></div>`;
+  let body = typeSelector
+    + `<div class="fg"><label class="fl">문제</label><textarea class="fi" rows="2" oninput="updateQ('${q.id}','text',this.value)">${q.text||''}</textarea></div>`
+    + `<div class="fg"><label class="fl" style="opacity:.7;">보충 설명 <span style="font-weight:400;text-transform:none;letter-spacing:0;">(선택)</span></label><textarea class="fi" rows="2" placeholder="추가 설명, 조건, 힌트 등" oninput="updateQ('${q.id}','desc',this.value)">${q.desc||''}</textarea></div>`;
+
+  const optDelBtn = (oi) => `<button onclick="removeOption('${q.id}',${oi})" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:18px;line-height:1;padding:0 2px;flex-shrink:0;transition:color .12s;" onmouseover="this.style.color='var(--accent3)'" onmouseout="this.style.color='var(--dim)'" title="삭제">×</button>`;
 
   if (q.type==='multiple') {
-    body += `<div class="fg"><label class="fl">보기${mode==='exam'?' (번호 클릭 = 정답)':''}</label><div class="options-editor">` +
+    const examHint = mode==='exam' ? `<span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--dim);"> — 번호를 클릭하면 정답으로 설정</span>` : '';
+    body += `<div class="fg"><label class="fl">보기${examHint}</label><div class="options-editor">` +
       (q.options||['','','','']).map((o,oi)=>
         `<div class="opt-row">
-          ${mode==='exam' ? `<div class="opt-label ${String(q.answer)===String(oi)?'correct':''}" onclick="setAnswer('${q.id}',${oi},this)">${oi+1}</div>` : `<div class="opt-label">${oi+1}</div>`}
-          <input class="fi" value="${o}" placeholder="보기 ${oi+1}" onchange="updateOpt('${q.id}',${oi},this.value)"/>
-          <button onclick="removeOption('${q.id}',${oi})" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:16px;padding:0 4px;flex-shrink:0;" title="삭제">×</button>
+          ${mode==='exam'
+            ? `<div class="opt-label ${String(q.answer)===String(oi)?'correct':''}" onclick="setAnswer('${q.id}',${oi},this)" title="정답으로 설정">${oi+1}</div>`
+            : `<div class="opt-label" style="cursor:default;">${oi+1}</div>`}
+          <input class="fi" value="${o}" placeholder="보기 ${oi+1}" oninput="updateOpt('${q.id}',${oi},this.value)"/>
+          ${optDelBtn(oi)}
         </div>`
       ).join('') + `</div>
-      <button class="add-q-btn" style="margin-top:8px;" onclick="addOption('${q.id}')">＋ 보기 추가</button></div>`;
-    if (mode==='exam') body+=`<div class="fg"><label class="fl">해설 (선택)</label><input class="fi" value="${q.explanation||''}" onchange="updateQ('${q.id}','explanation',this.value)"/></div>`;
+      <button class="add-q-btn" style="margin-top:10px;" onclick="addOption('${q.id}')">＋ 보기 추가</button></div>`;
+    if (mode==='exam') body+=`<div class="fg"><label class="fl" style="opacity:.7;">해설 <span style="font-weight:400;text-transform:none;letter-spacing:0;">(선택)</span></label><input class="fi" value="${q.explanation||''}" placeholder="정답 해설을 입력하세요" oninput="updateQ('${q.id}','explanation',this.value)"/></div>`;
 
   } else if (q.type==='checkbox') {
-    body += `<div class="fg"><label class="fl">보기 (복수 선택 가능)</label><div class="options-editor">` +
+    body += `<div class="fg"><label class="fl">보기 <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--dim);">(복수 선택)</span></label><div class="options-editor">` +
       (q.options||['','']).map((o,oi)=>
         `<div class="opt-row">
-          <div class="opt-label" style="border-radius:4px;">☐</div>
-          <input class="fi" value="${o}" placeholder="보기 ${oi+1}" onchange="updateOpt('${q.id}',${oi},this.value)"/>
-          <button onclick="removeOption('${q.id}',${oi})" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:16px;padding:0 4px;flex-shrink:0;" title="삭제">×</button>
+          <div class="opt-label" style="border-radius:5px;cursor:default;font-size:14px;">☐</div>
+          <input class="fi" value="${o}" placeholder="보기 ${oi+1}" oninput="updateOpt('${q.id}',${oi},this.value)"/>
+          ${optDelBtn(oi)}
         </div>`
       ).join('') + `</div>
-      <button class="add-q-btn" style="margin-top:8px;" onclick="addOption('${q.id}')">＋ 보기 추가</button></div>`;
+      <button class="add-q-btn" style="margin-top:10px;" onclick="addOption('${q.id}')">＋ 보기 추가</button></div>`;
 
   } else if (q.type==='dropdown') {
     body += `<div class="fg"><label class="fl">선택지</label><div class="options-editor">` +
       (q.options||['','']).map((o,oi)=>
         `<div class="opt-row">
-          <div class="opt-label">${oi+1}</div>
-          <input class="fi" value="${o}" placeholder="선택지 ${oi+1}" onchange="updateOpt('${q.id}',${oi},this.value)"/>
-          <button onclick="removeOption('${q.id}',${oi})" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:16px;padding:0 4px;flex-shrink:0;" title="삭제">×</button>
+          <div class="opt-label" style="cursor:default;">${oi+1}</div>
+          <input class="fi" value="${o}" placeholder="선택지 ${oi+1}" oninput="updateOpt('${q.id}',${oi},this.value)"/>
+          ${optDelBtn(oi)}
         </div>`
       ).join('') + `</div>
-      <button class="add-q-btn" style="margin-top:8px;" onclick="addOption('${q.id}')">＋ 선택지 추가</button></div>`;
+      <button class="add-q-btn" style="margin-top:10px;" onclick="addOption('${q.id}')">＋ 선택지 추가</button></div>`;
 
   } else if (q.type==='ox') {
     if (mode==='exam') {
@@ -3088,18 +3114,22 @@ function qItemHTML(q, i, mode) {
         <button class="mode-btn ${q.answer==='O'?'sel-exam':''}" style="max-width:80px;" onclick="updateQ('${q.id}','answer','O');reRenderQ()">O</button>
         <button class="mode-btn ${q.answer==='X'?'sel-exam':''}" style="max-width:80px;" onclick="updateQ('${q.id}','answer','X');reRenderQ()">X</button>
       </div></div>`;
+    } else {
+      body+=`<div style="font-size:13px;color:var(--muted);padding:8px 0;">응시자가 O 또는 X를 선택합니다.</div>`;
     }
 
   } else if (q.type==='short') {
-    if (mode==='exam') body+=`<div class="fg"><label class="fl">정답</label><input class="fi" value="${q.answer||''}" onchange="updateQ('${q.id}','answer',this.value)"/></div>`;
+    if (mode==='exam') body+=`<div class="fg"><label class="fl">정답</label><input class="fi" value="${q.answer||''}" placeholder="정확한 정답 텍스트" oninput="updateQ('${q.id}','answer',this.value)"/></div>`;
+    else body+=`<div style="font-size:13px;color:var(--muted);padding:8px 0;">응시자가 짧은 텍스트를 입력합니다.</div>`;
 
   } else if (q.type==='essay') {
-    if (mode==='exam') body+=`<div class="fg"><label class="fl">모범 답안 (AI 채점 기준)</label><textarea class="fi" rows="3" onchange="updateQ('${q.id}','modelAnswer',this.value)">${q.modelAnswer||''}</textarea></div>`;
+    if (mode==='exam') body+=`<div class="fg"><label class="fl">모범 답안 <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--dim);">(AI 채점 기준)</span></label><textarea class="fi" rows="3" oninput="updateQ('${q.id}','modelAnswer',this.value)">${q.modelAnswer||''}</textarea></div>`;
+    else body+=`<div style="font-size:13px;color:var(--muted);padding:8px 0;">응시자가 자유롭게 서술합니다.</div>`;
 
   } else if (q.type==='scale') {
     body+=`<div class="two-col">
-      <div class="fg"><label class="fl">좌측 라벨</label><input class="fi" value="${q.scaleMin||'전혀 아니다'}" onchange="updateQ('${q.id}','scaleMin',this.value)"/></div>
-      <div class="fg"><label class="fl">우측 라벨</label><input class="fi" value="${q.scaleMax||'매우 그렇다'}" onchange="updateQ('${q.id}','scaleMax',this.value)"/></div>
+      <div class="fg"><label class="fl">좌측 라벨</label><input class="fi" value="${q.scaleMin||'전혀 아니다'}" oninput="updateQ('${q.id}','scaleMin',this.value)"/></div>
+      <div class="fg"><label class="fl">우측 라벨</label><input class="fi" value="${q.scaleMax||'매우 그렇다'}" oninput="updateQ('${q.id}','scaleMax',this.value)"/></div>
     </div>`;
 
   } else if (q.type==='linear') {
@@ -3108,8 +3138,8 @@ function qItemHTML(q, i, mode) {
       <div class="fg"><label class="fl">최댓값</label><select class="fi" onchange="updateQ('${q.id}','linearMax',+this.value)">${[2,3,4,5,6,7,8,9,10].map(v=>`<option value="${v}" ${(q.linearMax??5)===v?'selected':''}>${v}</option>`).join('')}</select></div>
     </div>
     <div class="two-col">
-      <div class="fg"><label class="fl">좌측 라벨</label><input class="fi" value="${q.scaleMin||''}" placeholder="예: 매우 불만족" onchange="updateQ('${q.id}','scaleMin',this.value)"/></div>
-      <div class="fg"><label class="fl">우측 라벨</label><input class="fi" value="${q.scaleMax||''}" placeholder="예: 매우 만족" onchange="updateQ('${q.id}','scaleMax',this.value)"/></div>
+      <div class="fg"><label class="fl">좌측 라벨</label><input class="fi" value="${q.scaleMin||''}" placeholder="예: 매우 불만족" oninput="updateQ('${q.id}','scaleMin',this.value)"/></div>
+      <div class="fg"><label class="fl">우측 라벨</label><input class="fi" value="${q.scaleMax||''}" placeholder="예: 매우 만족" oninput="updateQ('${q.id}','scaleMax',this.value)"/></div>
     </div>`;
 
   } else if (q.type==='star') {
@@ -3118,78 +3148,79 @@ function qItemHTML(q, i, mode) {
   } else if (q.type==='grid' || q.type==='checkgrid') {
     body+=`<div class="two-col">
       <div class="fg"><label class="fl">행 (질문)</label>
-        ${(q.rows||['행 1']).map((r,ri)=>`<input class="fi" style="margin-bottom:6px;" value="${r}" placeholder="행 ${ri+1}" onchange="updateGridRow('${q.id}',${ri},this.value)"/>`).join('')}
+        ${(q.rows||['행 1']).map((r,ri)=>`<input class="fi" style="margin-bottom:6px;" value="${r}" placeholder="행 ${ri+1}" oninput="updateGridRow('${q.id}',${ri},this.value)"/>`).join('')}
         <button class="add-q-btn" style="margin-top:4px;" onclick="addGridRow('${q.id}')">＋ 행 추가</button>
       </div>
       <div class="fg"><label class="fl">열 (선택지)</label>
-        ${(q.cols||['열 1']).map((c,ci)=>`<input class="fi" style="margin-bottom:6px;" value="${c}" placeholder="열 ${ci+1}" onchange="updateGridCol('${q.id}',${ci},this.value)"/>`).join('')}
+        ${(q.cols||['열 1']).map((c,ci)=>`<input class="fi" style="margin-bottom:6px;" value="${c}" placeholder="열 ${ci+1}" oninput="updateGridCol('${q.id}',${ci},this.value)"/>`).join('')}
         <button class="add-q-btn" style="margin-top:4px;" onclick="addGridCol('${q.id}')">＋ 열 추가</button>
       </div>
     </div>`;
 
   } else if (q.type==='date' || q.type==='time') {
-    body+=`<div style="font-size:13px;color:var(--muted);padding:10px 0;">응시자가 ${q.type==='date'?'날짜':'시간'}를 직접 선택합니다.</div>`;
+    body+=`<div style="font-size:13px;color:var(--muted);padding:8px 0;">응시자가 ${q.type==='date'?'날짜':'시간'}를 직접 선택합니다.</div>`;
 
   } else if (q.type==='file') {
-    body+=`<div style="font-size:13px;color:var(--muted);padding:10px 0;">응시자가 파일을 업로드합니다. Supabase Storage에 저장됩니다.</div>`;
+    body+=`<div style="font-size:13px;color:var(--muted);padding:8px 0;">응시자가 파일을 업로드합니다.</div>`;
   }
 
-  // 하단 — 시험 모드만 배점 표시, 순서 고정은 항상
-  if (mode==='exam' && !['scale','checkbox','dropdown','linear','star','grid','checkgrid','date','time','file'].includes(q.type)) {
-    body+=`<div class="flex justify-between items-center mt-12">
-      <div class="flex gap-8 items-center">
-        <label class="fl" style="margin-bottom:0;">배점</label>
-        <input class="fi fi-sm fi-inline" type="number" value="${q.score||10}" style="width:70px;" onchange="updateQ('${q.id}','score',+this.value)"/>
-        <span style="font-size:13px;color:var(--muted);">점</span>
-      </div>
-      <div class="flex gap-8 items-center">
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;">
-          <button class="tgl ${q.fixedOrder?'on':''}" onclick="toggleFixed('${q.id}',this)"></button>순서 고정 🔒
-        </label>
-        <button class="btn btn-xs btn-outline" style="color:var(--accent4);border-color:rgba(107,139,246,.3);" onclick="duplicateQ('${q.id}')">복제</button>
-        <button class="btn btn-xs btn-danger" onclick="deleteQ('${q.id}')">삭제</button>
-      </div>
-    </div>`;
-  } else {
-    body+=`<div class="flex justify-between items-center mt-12">
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;">
-        <button class="tgl ${q.fixedOrder?'on':''}" onclick="toggleFixed('${q.id}',this)"></button>순서 고정 🔒
-      </label>
-      <button class="btn btn-xs btn-outline" style="color:var(--accent4);border-color:rgba(107,139,246,.3);" onclick="duplicateQ('${q.id}')">복제</button>
-      <button class="btn btn-xs btn-danger" onclick="deleteQ('${q.id}')">삭제</button>
-    </div>`;
-  }
+  // 하단 설정 바
+  const scoreField = (mode==='exam' && !['scale','checkbox','dropdown','linear','star','grid','checkgrid','date','time','file'].includes(q.type))
+    ? `<div class="flex gap-6 items-center">
+        <label class="fl" style="margin-bottom:0;white-space:nowrap;">배점</label>
+        <input class="fi fi-sm fi-inline" type="number" value="${q.score||10}" style="width:62px;" oninput="updateQ('${q.id}','score',+this.value)"/>
+        <span style="font-size:12px;color:var(--muted);">점</span>
+      </div>` : '';
+  const requiredToggle = mode==='survey'
+    ? `<label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer;white-space:nowrap;">
+        <button class="tgl ${q.required?'on survey-tgl':''}" onclick="toggleRequired('${q.id}',this)"></button>필수 응답
+      </label>` : '';
+  const fixedToggle = `<label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer;white-space:nowrap;">
+    <button class="tgl ${q.fixedOrder?'on':''}" onclick="toggleFixed('${q.id}',this)"></button>순서 고정
+  </label>`;
 
+  body+=`<div style="border-top:1px solid var(--border);margin-top:16px;padding-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    ${scoreField}
+    ${fixedToggle}
+    ${requiredToggle}
+  </div>`;
+
+  // 파일 첨부
+  body+=`<div style="border-top:1px solid var(--border);margin-top:14px;padding-top:14px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:10px;">📎 첨부 자료 <span style="font-weight:400;text-transform:none;letter-spacing:0;">(선택)</span></div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <button id="qtab-upload-${q.id}" onclick="setQFileTab('${q.id}','upload')" style="padding:5px 12px;border-radius:var(--rs);border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:11px;cursor:pointer;font-weight:600;">📁 업로드</button>
+      <button id="qtab-url-${q.id}" onclick="setQFileTab('${q.id}','url')" style="padding:5px 12px;border-radius:var(--rs);border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;cursor:pointer;">🔗 URL</button>
+    </div>
+    <div id="qupload-area-${q.id}">
+      <input type="file" id="qfile-input-${q.id}" accept="image/*,.pdf" style="display:none;" onchange="onQFileUpload('${q.id}',this)">
+      <button onclick="document.getElementById('qfile-input-${q.id}').click()" style="width:100%;padding:8px;border:1.5px dashed var(--border);border-radius:var(--rs);background:var(--surface);color:var(--muted);font-size:12px;cursor:pointer;">＋ 파일 선택 (이미지, PDF)</button>
+    </div>
+    <div id="qurl-area-${q.id}" style="display:none;">
+      <input class="fi" placeholder="https://... 이미지 또는 외부 링크" style="margin:0;" oninput="onQUrlInput('${q.id}',this.value)" value="${q.attachmentUrl||''}">
+    </div>
+    <div id="qfile-preview-${q.id}" style="margin-top:8px;">${q.attachmentUrl ? renderAttachmentPreviewHTML(q.attachmentUrl, q.attachmentName||'') : ''}</div>
+    <input type="hidden" id="qfile-url-${q.id}" value="${q.attachmentUrl||''}">
+    <input type="hidden" id="qfile-name-${q.id}" value="${q.attachmentName||''}">
+  </div>`;
+
+  const previewText = q.text || '';
   return `<div class="q-item" id="qi-${q.id}">
     <div class="q-item-header">
-      <span class="q-drag">⠿</span>
+      <span class="q-drag" title="드래그하여 순서 변경">⠿</span>
       <div class="q-num-b">${i+1}</div>
-      <div class="q-preview">${q.text||'(문제를 입력하세요)'}</div>
+      <div class="q-preview ${previewText?'':'empty'}">${previewText||'문제를 입력하세요'}</div>
       <span class="q-type-tag">${typeLabel}</span>
-      ${q.fixedOrder ? `<span style="font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(240,160,96,.15);color:var(--accent4);font-weight:700;">🔒 고정</span>` : ''}
+      ${q.required ? `<span class="req-badge">필수</span>` : ''}
+      ${q.fixedOrder ? `<span style="font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(240,160,96,.15);color:var(--accent4);font-weight:700;flex-shrink:0;">🔒</span>` : ''}
       ${mode==='exam'?`<span class="q-score-tag">${q.score||10}점</span>`:''}
+      <div class="q-hdr-actions">
+        <button class="q-hdr-btn" onclick="event.stopPropagation();duplicateQ('${q.id}')" title="복제">복제</button>
+        <button class="q-hdr-btn danger" onclick="event.stopPropagation();deleteQ('${q.id}')" title="삭제">삭제</button>
+      </div>
       <span class="q-chevron">▾</span>
     </div>
-    <div class="q-body">
-      ${body}
-      <div style="border-top:1px solid var(--border);margin-top:14px;padding-top:14px;">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:10px;">📎 문항 첨부 자료 <span style="font-weight:400;text-transform:none;letter-spacing:0;">(선택)</span></div>
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-          <button id="qtab-upload-${q.id}" onclick="setQFileTab('${q.id}','upload')" style="padding:5px 12px;border-radius:var(--rs);border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:11px;cursor:pointer;font-weight:600;">📁 업로드</button>
-          <button id="qtab-url-${q.id}" onclick="setQFileTab('${q.id}','url')" style="padding:5px 12px;border-radius:var(--rs);border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;cursor:pointer;">🔗 URL</button>
-        </div>
-        <div id="qupload-area-${q.id}">
-          <input type="file" id="qfile-input-${q.id}" accept="image/*,.pdf" style="display:none;" onchange="onQFileUpload('${q.id}',this)">
-          <button onclick="document.getElementById('qfile-input-${q.id}').click()" style="width:100%;padding:8px;border:1.5px dashed var(--border);border-radius:var(--rs);background:var(--surface2);color:var(--muted);font-size:12px;cursor:pointer;">＋ 파일 선택 (이미지, PDF)</button>
-        </div>
-        <div id="qurl-area-${q.id}" style="display:none;">
-          <input class="fi" placeholder="https://... 이미지 또는 외부 링크" style="margin:0;" oninput="onQUrlInput('${q.id}',this.value)" value="${q.attachmentUrl||''}">
-        </div>
-        <div id="qfile-preview-${q.id}" style="margin-top:8px;">${q.attachmentUrl ? renderAttachmentPreviewHTML(q.attachmentUrl, q.attachmentName||'') : ''}</div>
-        <input type="hidden" id="qfile-url-${q.id}" value="${q.attachmentUrl||''}">
-        <input type="hidden" id="qfile-name-${q.id}" value="${q.attachmentName||''}">
-      </div>
-    </div>
+    <div class="q-body">${body}</div>
   </div>`;
 }
 
@@ -3265,6 +3296,13 @@ function toggleFixed(qid, btn) {
   btn.classList.toggle('on');
   const isFixed = btn.classList.contains('on');
   updateQ(qid, 'fixedOrder', isFixed);
+  reRenderQ();
+}
+function toggleRequired(qid, btn) {
+  btn.classList.toggle('on');
+  btn.classList.toggle('survey-tgl', btn.classList.contains('on'));
+  const isRequired = btn.classList.contains('on');
+  updateQ(qid, 'required', isRequired);
   reRenderQ();
 }
 function reRenderQ() {
