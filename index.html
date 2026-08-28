@@ -3054,6 +3054,7 @@ function qItemHTML(q, i, mode) {
         `<div class="opt-row">
           ${mode==='exam' ? `<div class="opt-label ${String(q.answer)===String(oi)?'correct':''}" onclick="setAnswer('${q.id}',${oi},this)">${oi+1}</div>` : `<div class="opt-label">${oi+1}</div>`}
           <input class="fi" value="${o}" placeholder="보기 ${oi+1}" onchange="updateOpt('${q.id}',${oi},this.value)"/>
+          <button onclick="removeOption('${q.id}',${oi})" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:16px;padding:0 4px;flex-shrink:0;" title="삭제">×</button>
         </div>`
       ).join('') + `</div>
       <button class="add-q-btn" style="margin-top:8px;" onclick="addOption('${q.id}')">＋ 보기 추가</button></div>`;
@@ -3065,6 +3066,7 @@ function qItemHTML(q, i, mode) {
         `<div class="opt-row">
           <div class="opt-label" style="border-radius:4px;">☐</div>
           <input class="fi" value="${o}" placeholder="보기 ${oi+1}" onchange="updateOpt('${q.id}',${oi},this.value)"/>
+          <button onclick="removeOption('${q.id}',${oi})" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:16px;padding:0 4px;flex-shrink:0;" title="삭제">×</button>
         </div>`
       ).join('') + `</div>
       <button class="add-q-btn" style="margin-top:8px;" onclick="addOption('${q.id}')">＋ 보기 추가</button></div>`;
@@ -3075,6 +3077,7 @@ function qItemHTML(q, i, mode) {
         `<div class="opt-row">
           <div class="opt-label">${oi+1}</div>
           <input class="fi" value="${o}" placeholder="선택지 ${oi+1}" onchange="updateOpt('${q.id}',${oi},this.value)"/>
+          <button onclick="removeOption('${q.id}',${oi})" style="background:none;border:none;cursor:pointer;color:var(--dim);font-size:16px;padding:0 4px;flex-shrink:0;" title="삭제">×</button>
         </div>`
       ).join('') + `</div>
       <button class="add-q-btn" style="margin-top:8px;" onclick="addOption('${q.id}')">＋ 선택지 추가</button></div>`;
@@ -3220,6 +3223,11 @@ function addQ(type) {
 function addOption(qid) {
   const item=getCurrent(); const q=item.questions.find(q=>String(q.id)===String(qid));
   if(q&&q.options){ q.options.push(''); save(); renderQList(item.questions,item.mode);
+    setTimeout(()=>document.getElementById('qi-'+qid)?.classList.add('open'),50); }
+}
+function removeOption(qid, oi) {
+  const item=getCurrent(); const q=item.questions.find(q=>String(q.id)===String(qid));
+  if(q&&q.options&&q.options.length>1){ q.options.splice(oi,1); save(); renderQList(item.questions,item.mode);
     setTimeout(()=>document.getElementById('qi-'+qid)?.classList.add('open'),50); }
 }
 function addGridRow(qid) {
