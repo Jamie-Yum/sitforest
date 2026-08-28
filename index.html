@@ -5169,12 +5169,16 @@ function renderQ() {
   if (q.type==='multiple') {
     const order = shuffledOpts[q.id] || q.options.map((_,i)=>i);
     const surveyClass = isSurvey ? ' survey' : '';
+    const selectedIdx = answers[String(q.id)];
+    const etcIdx = q.options.findIndex(o => o === '기타');
+    const etcVal = answers[String(q.id)+'_etc'] || '';
     inputHTML=`<div class="opts">`+order.map((origIdx,di)=>{
-      const isSel = answers[String(q.id)]===origIdx;
+      const isSel = selectedIdx===origIdx;
       return `<button class="opt ${isSel?'sel'+surveyClass:''}" onclick="selectOpt(this,${origIdx})">
         <span class="opt-n">${di+1}</span><span>${q.options[origIdx]}</span>
       </button>`;
-    }).join('')+`</div>`;
+    }).join('')+(etcIdx!==-1?`<input class="etc-input fi" id="etc-${q.id}" type="text" placeholder="기타 내용을 입력해주세요" value="${etcVal}" style="display:${selectedIdx===etcIdx?'block':'none'};margin-top:8px;" oninput="answers['${q.id}_etc']=this.value;updateDots()">`:'')
+    +`</div>`;
 
   } else if (q.type==='checkbox') {
     const sel = answers[String(q.id)] || [];
@@ -5424,7 +5428,16 @@ function selectOpt(el,origIdx) {
   el.querySelector('.opt-n').style.background  = isSurvey?'var(--accent2)':'var(--accent)';
   el.querySelector('.opt-n').style.borderColor = isSurvey?'var(--accent2)':'var(--accent)';
   el.querySelector('.opt-n').style.color = '#fff';
-  answers[String(activeItem.questions[currentQ].id)] = origIdx; updateDots();
+  const qId = activeItem.questions[currentQ].id;
+  answers[String(qId)] = origIdx; updateDots();
+  // 기타 입력창 처리
+  const etcInput = el.closest('.opts').querySelector('.etc-input');
+  if (etcInput) {
+    const isEtc = el.querySelector('span:last-child')?.textContent === '기타';
+    etcInput.style.display = isEtc ? 'block' : 'none';
+    if (!isEtc) { answers[String(qId)+'_etc'] = ''; etcInput.value = ''; }
+    if (isEtc) setTimeout(()=>etcInput.focus(), 50);
+  }
 }
 function selectOX(el,val) {
   el.parentElement.querySelectorAll('.ox-btn').forEach(b=>b.className='ox-btn');
