@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -14,6 +14,7 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27><rect width=%2764%27 height=%2764%27 rx=%2732%27 fill=%27%231B4332%27/><rect x=%274%27 y=%2734%27 width=%273%27 height=%2718%27 rx=%271%27 fill=%27%23795548%27/><circle cx=%275%27 cy=%2730%27 r=%277%27 fill=%27%2340916C%27/><rect x=%2755%27 y=%2736%27 width=%273%27 height=%2716%27 rx=%271%27 fill=%27%23795548%27/><circle cx=%2756%27 cy=%2732%27 r=%276%27 fill=%27%2352B788%27/><rect x=%2747%27 y=%2738%27 width=%273%27 height=%2714%27 rx=%271%27 fill=%27%23795548%27/><circle cx=%2748%27 cy=%2734%27 r=%275%27 fill=%27%2340916C%27/><rect x=%2719%27 y=%2742%27 width=%2724%27 height=%274%27 rx=%272%27 fill=%27%2374C69D%27/><rect x=%2735%27 y=%2730%27 width=%273%27 height=%2714%27 rx=%271.5%27 fill=%27%2374C69D%27/><rect x=%2719%27 y=%2746%27 width=%273%27 height=%279%27 rx=%271.5%27 fill=%27%2352B788%27/><rect x=%2737%27 y=%2746%27 width=%273%27 height=%279%27 rx=%271.5%27 fill=%27%2352B788%27/><circle cx=%2728%27 cy=%2727%27 r=%275%27 fill=%27white%27/><rect x=%2722%27 y=%2732%27 width=%2712%27 height=%2710%27 rx=%273%27 fill=%27white%27/><rect x=%2722%27 y=%2742%27 width=%274%27 height=%278%27 rx=%272%27 fill=%27rgba(255,255,255,0.7)%27/><rect x=%2729%27 y=%2742%27 width=%274%27 height=%278%27 rx=%272%27 fill=%27rgba(255,255,255,0.7)%27/></svg>">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Raleway:wght@300;400;600;700;800&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
@@ -1005,6 +1006,98 @@ textarea.fi{resize:vertical;min-height:72px;line-height:1.6;}
   .btn-nav { padding: 8px 14px; font-size: 12px; }
 }
 
+/* == SERP 응대회고노트 패널 == */
+#panel-serp{--bg:#F3F4F9;--surface:#fff;--surface-2:#EAECF5;--text:#1A1C2D;--text-muted:#6B6E95;--accent:#3455A4;--accent-warm:#C06825;--border:#D4D7ED;--line:#C6C9E0;--cat-r-bg:#E8EEF8;--cat-r-text:#2D5391;--cat-c-bg:#E6F2EC;--cat-c-text:#1F6B4A;--cat-g-bg:#F5EDDF;--cat-g-text:#9E5A10;--cat-o-bg:#EDE8F5;--cat-o-text:#5C3F96;--cat-b-bg:#F5E8E8;--cat-b-text:#8C2E2E;--cat-w-bg:#E6F2F2;--cat-w-text:#1E6868;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.7;}
+body:not(.light-mode) #panel-serp{--bg:#10111D;--surface:#191B2C;--surface-2:#21233A;--text:#E6E8F8;--text-muted:#8087B8;--accent:#6A92E0;--accent-warm:#D98944;--border:#2A2E4A;--line:#2F3455;--cat-r-bg:#1E2D4A;--cat-r-text:#8BAFE0;--cat-c-bg:#1A3028;--cat-c-text:#60B88A;--cat-g-bg:#35240E;--cat-g-text:#D89944;--cat-o-bg:#261A3D;--cat-o-text:#A07ECC;--cat-b-bg:#321818;--cat-b-text:#CC6666;--cat-w-bg:#0F2828;--cat-w-text:#55B0B0;}
+#panel-serp .page-header{background:var(--surface);border-bottom:1px solid var(--border);padding:40px 48px 32px;max-width:900px;margin:0 auto;}
+#panel-serp .header-eyebrow{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+#panel-serp .header-title{font-family:'Noto Serif KR',serif;font-size:28px;font-weight:700;color:var(--text);line-height:1.3;text-wrap:balance;}
+#panel-serp .header-title em{font-style:normal;color:var(--accent);}
+#panel-serp .header-sub{margin-top:8px;font-size:13px;color:var(--text-muted);}
+#panel-serp .stats-row{display:flex;gap:0;margin-top:24px;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+#panel-serp .stat-item{flex:1;padding:14px 18px;border-right:1px solid var(--border);}#panel-serp .stat-item:last-child{border-right:none;}
+#panel-serp .stat-num{font-size:22px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1;}
+#panel-serp .stat-label{font-size:11px;color:var(--text-muted);margin-top:3px;}
+#panel-serp .page-body{max-width:900px;margin:0 auto;padding:0 0 60px;}
+#panel-serp .legend-block{background:var(--surface);border-bottom:1px solid var(--border);padding:18px 48px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+#panel-serp .legend-label{font-size:11px;color:var(--text-muted);font-weight:500;margin-right:4px;white-space:nowrap;}
+#panel-serp .cat-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap;}#panel-serp .cat-chip .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+#panel-serp .cat-r{background:var(--cat-r-bg);color:var(--cat-r-text);}#panel-serp .cat-r .dot{background:var(--cat-r-text);}
+#panel-serp .cat-c{background:var(--cat-c-bg);color:var(--cat-c-text);}#panel-serp .cat-c .dot{background:var(--cat-c-text);}
+#panel-serp .cat-g{background:var(--cat-g-bg);color:var(--cat-g-text);}#panel-serp .cat-g .dot{background:var(--cat-g-text);}
+#panel-serp .cat-o{background:var(--cat-o-bg);color:var(--cat-o-text);}#panel-serp .cat-o .dot{background:var(--cat-o-text);}
+#panel-serp .cat-b{background:var(--cat-b-bg);color:var(--cat-b-text);}#panel-serp .cat-b .dot{background:var(--cat-b-text);}
+#panel-serp .cat-w{background:var(--cat-w-bg);color:var(--cat-w-text);}#panel-serp .cat-w .dot{background:var(--cat-w-text);}
+#panel-serp .growth-section{padding:28px 48px;background:var(--surface);border-bottom:1px solid var(--border);}
+#panel-serp .section-heading{font-family:'Noto Serif KR',serif;font-size:13px;font-weight:600;color:var(--text-muted);letter-spacing:.04em;margin-bottom:16px;}
+#panel-serp .chart-wrap{overflow-x:auto;}#panel-serp svg.growth-chart{display:block;width:100%;min-width:640px;}
+#panel-serp .evolution-note{margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+#panel-serp .evol-card{background:var(--surface-2);border-radius:8px;padding:14px 16px;}
+#panel-serp .evol-period{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px;}
+#panel-serp .evol-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}#panel-serp .evol-desc{font-size:12px;color:var(--text-muted);line-height:1.5;}
+#panel-serp .timeline{padding:0 48px;}#panel-serp .month-section{margin-top:36px;}
+#panel-serp .month-header{display:flex;align-items:baseline;gap:12px;padding-bottom:10px;border-bottom:2px solid var(--accent);margin-bottom:16px;}
+#panel-serp .month-name{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:700;color:var(--text);}#panel-serp .month-note{font-size:12px;color:var(--text-muted);}
+#panel-serp .rounds-grid{display:flex;flex-direction:column;gap:10px;}
+#panel-serp .round-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:start;}
+#panel-serp .round-label{font-weight:600;font-size:13px;color:var(--text);}#panel-serp .round-dates{font-size:11px;color:var(--text-muted);margin-top:2px;font-variant-numeric:tabular-nums;}
+#panel-serp .round-count{display:inline-flex;align-items:center;gap:4px;background:var(--accent);color:#fff;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;margin-top:8px;font-variant-numeric:tabular-nums;}
+#panel-serp .round-questions{display:flex;flex-direction:column;gap:7px;}
+#panel-serp .question-row{display:flex;align-items:flex-start;gap:8px;}
+#panel-serp .q-num{font-size:10px;font-weight:600;color:var(--text-muted);min-width:20px;padding-top:2px;font-variant-numeric:tabular-nums;}
+#panel-serp .q-tag{font-size:10px;font-weight:500;padding:1px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:1px;}
+#panel-serp .q-text{font-size:13px;color:var(--text);line-height:1.5;}
+#panel-serp .round-note{grid-column:1/-1;font-size:11px;color:var(--text-muted);font-style:italic;padding:8px 10px;background:var(--surface-2);border-radius:5px;}
+#panel-serp .round-free{background:var(--surface-2);border:1px dashed var(--border);}
+@media (max-width:680px){#panel-serp .page-header,#panel-serp .legend-block,#panel-serp .growth-section,#panel-serp .timeline{padding-left:20px;padding-right:20px;}#panel-serp .round-card{grid-template-columns:1fr;gap:10px;}#panel-serp .stats-row{flex-wrap:wrap;}#panel-serp .stat-item{min-width:50%;}#panel-serp .evolution-note{grid-template-columns:1fr;}}
+/* == SERP 탭 네비게이션 == */
+#panel-serp .serp-tab-nav{display:flex;gap:0;border-bottom:2px solid var(--border);background:var(--surface);max-width:900px;margin:0 auto;padding:0 48px;}
+#panel-serp .serp-tab-btn{background:none;border:none;cursor:pointer;font-family:'Pretendard',sans-serif;font-size:14px;font-weight:500;color:var(--text-muted);padding:14px 20px 12px;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s;}
+#panel-serp .serp-tab-btn:hover{color:var(--text);}
+#panel-serp .serp-tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
+#panel-serp .serp-tab-pane{display:none;}
+#panel-serp .serp-tab-pane.active{display:block;}
+/* == 내 회고 보기 탭 == */
+#panel-serp .serp-my-wrap{max-width:900px;margin:0 auto;padding:28px 48px 60px;}
+/* 필터 바 */
+#panel-serp .serp-my-filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;align-items:center;}
+#panel-serp .serp-my-select{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;color:var(--text);font-family:'Pretendard',sans-serif;outline:none;cursor:pointer;transition:border-color .15s;appearance:none;-webkit-appearance:none;padding-right:28px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238087B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;}
+#panel-serp .serp-my-select:focus{border-color:var(--accent);}
+#panel-serp .serp-my-search{flex:1;min-width:140px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 14px;font-size:13px;color:var(--text);font-family:'Pretendard',sans-serif;outline:none;transition:border-color .15s;}
+#panel-serp .serp-my-search::placeholder{color:var(--text-muted);}
+#panel-serp .serp-my-search:focus{border-color:var(--accent);}
+/* 매장 섹션 그리드 */
+#panel-serp .serp-store-section{margin-bottom:24px;}
+#panel-serp .serp-store-heading{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:10px;}
+#panel-serp .serp-store-extra{color:var(--dim);}
+#panel-serp .serp-chip-grid{display:flex;flex-wrap:wrap;gap:6px;}
+/* 칩 */
+#panel-serp .serp-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:13px;font-family:'Pretendard',sans-serif;font-weight:500;cursor:pointer;border:none;transition:opacity .15s,box-shadow .15s,transform .1s;line-height:1.3;}
+#panel-serp .serp-chip:hover{transform:translateY(-1px);}
+#panel-serp .serp-chip-active{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent);border:1.5px solid color-mix(in srgb,var(--accent) 40%,transparent);}
+#panel-serp .serp-chip-active.serp-chip-selected{background:var(--accent);color:#fff;box-shadow:0 2px 10px color-mix(in srgb,var(--accent) 45%,transparent);}
+#panel-serp .serp-chip-inactive{background:transparent;color:var(--text-muted);border:1.5px solid var(--border);opacity:.65;}
+#panel-serp .serp-chip-inactive.serp-chip-selected{border-color:var(--accent);color:var(--text);opacity:1;}
+#panel-serp .serp-chip-resigned{background:transparent;color:var(--dim);border:1.5px solid var(--border);opacity:.45;text-decoration:line-through;}
+#panel-serp .serp-chip-resigned.serp-chip-selected{opacity:.7;border-color:var(--border2);}
+#panel-serp .serp-chip-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;background:rgba(255,255,255,.18);border-radius:9px;font-size:10px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1;}
+#panel-serp .serp-chip-active.serp-chip-selected .serp-chip-badge{background:rgba(255,255,255,.25);}
+/* 카드 영역 */
+#panel-serp .serp-cards-area{margin-top:12px;padding-top:20px;border-top:1px solid var(--border);}
+#panel-serp .serp-cards-hdr{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
+#panel-serp .serp-cards-name{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:700;color:var(--text);}
+#panel-serp .serp-cards-meta{font-size:12px;color:var(--text-muted);}
+#panel-serp .serp-refl-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;}
+#panel-serp .serp-refl-card-hdr{padding:12px 18px;font-size:12px;font-weight:600;color:var(--accent);border-bottom:1px solid var(--border);}
+#panel-serp .serp-refl-card-body{padding:14px 18px 16px;}
+#panel-serp .serp-qa-item{margin-bottom:4px;}
+#panel-serp .serp-qa-q{font-size:11px;color:var(--text-muted);font-family:'Noto Serif KR',serif;font-style:italic;margin-bottom:2px;line-height:1.5;}
+#panel-serp .serp-qa-a{font-size:14px;color:var(--text);font-family:'Pretendard',sans-serif;font-weight:500;margin-bottom:12px;line-height:1.65;white-space:pre-wrap;}
+#panel-serp .serp-qa-a:last-child{margin-bottom:0;}
+/* 공통 */
+#panel-serp .my-empty{text-align:center;padding:40px 0;color:var(--text-muted);font-size:14px;}
+#panel-serp .my-loading{text-align:center;padding:32px 0;color:var(--text-muted);font-size:13px;}
+@media (max-width:680px){#panel-serp .serp-tab-nav{padding:0 20px;}#panel-serp .serp-my-wrap{padding:20px 20px 48px;}#panel-serp .serp-my-filter-bar{flex-direction:column;align-items:stretch;}}
 </style>
 </head>
 <body>
@@ -1079,6 +1172,12 @@ textarea.fi{resize:vertical;min-height:72px;line-height:1.6;}
         <div class="lc-desc">응시자 입장에서<br>어떻게 보이는지 확인</div>
         <div class="lc-arrow">→</div>
       </div>
+      <div class="landing-card" onclick="goSERP()" style="background:rgba(52,85,164,0.4);border-color:rgba(107,146,230,0.25);">
+        <div class="lc-icon">&#128203;</div>
+        <div class="lc-title">응대회고 분석</div>
+        <div class="lc-desc">SERP 응대회고노트<br>질문 변화 분석</div>
+        <div class="lc-arrow">&#8594;</div>
+      </div>
     </div>
   </div>
   <div class="landing-footer" style="color:#2D6A4F;">
@@ -1110,6 +1209,7 @@ textarea.fi{resize:vertical;min-height:72px;line-height:1.6;}
 
     <div class="nav-section">기타</div>
     <div class="nav-item" data-panel="resources"><span class="nav-icon">📂</span>자료실</div>
+    <div class="nav-item" data-panel="serp"><span class="nav-icon">&#128203;</span>응대회고</div>
 
     <div class="sb-footer">
       <div class="sb-back" onclick="goLanding()">← 메인으로</div>
@@ -1442,8 +1542,862 @@ textarea.fi{resize:vertical;min-height:72px;line-height:1.6;}
       </div>
 
     </div>
+
+    <!-- SERP 응대회고 패널 -->
+    <div id="panel-serp" class="panel">
+<!-- 탭 네비게이션 -->
+<nav class="serp-tab-nav">
+  <button class="serp-tab-btn active" onclick="serpMyTab('analysis')" id="serp-tab-btn-analysis">전체 분석</button>
+  <button class="serp-tab-btn" onclick="serpMyTab('mine')" id="serp-tab-btn-mine">내 회고 보기</button>
+</nav>
+
+<!-- 전체 분석 탭 -->
+<div id="serp-tab-analysis" class="serp-tab-pane active">
+<div class="page-header">
+  <div class="header-eyebrow">SERP · 응대회고 프로그램</div>
+  <h1 class="header-title">질문 <em>변화 분석</em></h1>
+  <p class="header-sub">아카이브 기준 2025년 10월 — 2026년 8월 · 전체 598건 응답 분석</p>
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-num">598</div>
+      <div class="stat-label">총 응답 건수</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">22</div>
+      <div class="stat-label">운영 회차</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">31</div>
+      <div class="stat-label">최대 참여자 수</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">6</div>
+      <div class="stat-label">질문 유형</div>
+    </div>
+  </div>
+</div>
+
+<div class="page-body">
+  <div class="legend-block">
+    <span class="legend-label">질문 유형</span>
+    <span class="cat-chip cat-r"><span class="dot"></span>응대 성찰</span>
+    <span class="cat-chip cat-c"><span class="dot"></span>고객 이해</span>
+    <span class="cat-chip cat-g"><span class="dot"></span>개인 성장</span>
+    <span class="cat-chip cat-o"><span class="dot"></span>업무 운영</span>
+    <span class="cat-chip cat-b"><span class="dot"></span>브랜드·제품</span>
+    <span class="cat-chip cat-w"><span class="dot"></span>관계·문화</span>
+  </div>
+
+  <div class="growth-section">
+    <div class="section-heading">참여자 수 추이</div>
+    <div class="chart-wrap">
+      <svg class="growth-chart" viewBox="0 0 740 120" xmlns="http://www.w3.org/2000/svg" aria-label="회차별 참여자 수 추이 차트">
+        <defs>
+          <style>
+            .bar-main { fill: #3455A4; }
+            .bar-small { fill: #8BAFE0; }
+            .cl { fill: #6B6E95; font-size: 9px; font-family: 'Noto Sans KR', sans-serif; }
+            .lbl { fill: #1A1C2D; font-size: 9px; font-family: 'Noto Sans KR', sans-serif; text-anchor: middle; }
+            @media (prefers-color-scheme: dark) {
+              .bar-main { fill: #6A92E0; }
+              .bar-small { fill: #3D5FA0; }
+              .cl { fill: #8087B8; }
+              .lbl { fill: #E6E8F8; }
+            }
+          </style>
+        </defs>
+        <!-- Y axis guides -->
+        <line x1="40" y1="10" x2="40" y2="90" stroke="#D4D7ED" stroke-width="1"/>
+        <line x1="40" y1="90" x2="740" y2="90" stroke="#D4D7ED" stroke-width="1"/>
+        <!-- Y labels -->
+        <text class="cl" x="35" y="90" text-anchor="end">0</text>
+        <text class="cl" x="35" y="60" text-anchor="end">15</text>
+        <text class="cl" x="35" y="30" text-anchor="end">30</text>
+        <line x1="40" y1="60" x2="740" y2="60" stroke="#D4D7ED" stroke-width="0.5" stroke-dasharray="3,4"/>
+        <line x1="40" y1="30" x2="740" y2="30" stroke="#D4D7ED" stroke-width="0.5" stroke-dasharray="3,4"/>
+
+        <!-- Bars: each bar is 28px wide, 6px gap, start at x=50 -->
+        <!-- 파일럿 1주차: 14명 → height = 14/30*80 = 37.3 -->
+        <rect class="bar-small" x="50" y="52.7" width="28" height="37.3"/>
+        <text class="lbl" x="64" y="50">14</text>
+        <text class="cl" x="64" y="108" text-anchor="middle">파1주</text>
+
+        <!-- 파1 2주차: 9명 → 24 -->
+        <rect class="bar-small" x="84" y="66" width="28" height="24"/>
+        <text class="lbl" x="98" y="63">9</text>
+        <text class="cl" x="98" y="108" text-anchor="middle">파2주</text>
+
+        <!-- 파1 3주차: 12명 → 32 -->
+        <rect class="bar-small" x="118" y="58" width="28" height="32"/>
+        <text class="lbl" x="132" y="55">12</text>
+        <text class="cl" x="132" y="108" text-anchor="middle">파3주</text>
+
+        <!-- 파1 4주차: 9명 → 24 -->
+        <rect class="bar-small" x="152" y="66" width="28" height="24"/>
+        <text class="lbl" x="166" y="63">9</text>
+        <text class="cl" x="166" y="108" text-anchor="middle">파4주</text>
+
+        <!-- 25년12월 1-3주 27명 → 72 -->
+        <rect class="bar-main" x="196" y="18" width="28" height="72"/>
+        <text class="lbl" x="210" y="15">27</text>
+        <text class="cl" x="210" y="108" text-anchor="middle">25.12월</text>
+
+        <!-- 26년1월 avg 28 → 74.7 -->
+        <rect class="bar-main" x="240" y="15.3" width="28" height="74.7"/>
+        <text class="lbl" x="254" y="12">28</text>
+        <text class="cl" x="254" y="108" text-anchor="middle">26.1월</text>
+
+        <!-- 26년2월 avg 26 → 69.3 (통합: 25+28+25명) -->
+        <rect class="bar-main" x="284" y="20.7" width="28" height="69.3"/>
+        <text class="lbl" x="298" y="17">26</text>
+        <text class="cl" x="298" y="108" text-anchor="middle">26.2월</text>
+
+        <!-- 26년3월 avg 27 → 72 -->
+        <rect class="bar-main" x="328" y="18" width="28" height="72"/>
+        <text class="lbl" x="342" y="15">27</text>
+        <text class="cl" x="342" y="108" text-anchor="middle">26.3월</text>
+
+        <!-- 26년4월 avg 31 → 82.7 -->
+        <rect class="bar-main" x="372" y="7.3" width="28" height="82.7"/>
+        <text class="lbl" x="386" y="4">31</text>
+        <text class="cl" x="386" y="108" text-anchor="middle">26.4월</text>
+
+        <!-- 26년5월 avg 28 → 74.7 -->
+        <rect class="bar-main" x="416" y="15.3" width="28" height="74.7"/>
+        <text class="lbl" x="430" y="12">28</text>
+        <text class="cl" x="430" y="108" text-anchor="middle">26.5월</text>
+
+        <!-- 26년6월 avg 27 → 72 -->
+        <rect class="bar-main" x="460" y="18" width="28" height="72"/>
+        <text class="lbl" x="474" y="15">27</text>
+        <text class="cl" x="474" y="108" text-anchor="middle">26.6월</text>
+
+        <!-- 26년8월 avg 27 → 72 -->
+        <rect class="bar-main" x="504" y="18" width="28" height="72"/>
+        <text class="lbl" x="518" y="15">27</text>
+        <text class="cl" x="518" y="108" text-anchor="middle">26.8월</text>
+      </svg>
+    </div>
+
+    <div class="evolution-note">
+      <div class="evol-card">
+        <div class="evol-period">2025.10 — 2025.12</div>
+        <div class="evol-title">기본 회고 프레임</div>
+        <div class="evol-desc">잘한 점 / 아쉬운 점 / 궁금한 점 / 다음 시도. 소규모(9~14명) 파일럿 운영. 단순 구조로 습관 형성 집중.</div>
+      </div>
+      <div class="evol-card">
+        <div class="evol-period">2025.12 — 2026.02</div>
+        <div class="evol-title">규모 확대 + 심화</div>
+        <div class="evol-desc">참여자 급증(27~29명). "발견한 고객 니즈" 추가로 현장 인사이트 수집 기능 강화. 매주 집중 방향 의식화.</div>
+      </div>
+      <div class="evol-card">
+        <div class="evol-period">2026.03 — 2026.08</div>
+        <div class="evol-title">질적 성장 + 다양화</div>
+        <div class="evol-desc">강점·노하우·성취감·동료학습·고객 벤치마킹·성찰 등 전문성과 문화를 함께 묻는 방향으로 전환.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== TIMELINE ======== -->
+  <div class="timeline">
+
+    <!-- 파일럿 -->
+    <div class="month-section">
+      <div class="month-header">
+        <span class="month-name">파일럿 (2025년 10–11월)</span>
+        <span class="month-note">초기 4주 운영 · 소규모 테스트</span>
+      </div>
+      <div class="rounds-grid">
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">1주차</div>
+            <div class="round-dates">10/26 ~ 11/03</div>
+            <div class="round-count">14명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">오늘의 응대 — 한 줄 요약</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">잘했던 점 — 이번 응대에서 효과적이었던 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">아쉬웠던 점 — 다음엔 개선하고 싶은 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">궁금했던 점 — 응대 관련 궁금한 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q6</span><span class="q-tag cat-w">관계·문화</span><span class="q-text">응대 관련 자유 의견</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">2주차</div>
+            <div class="round-dates">10/30 ~ 11/04</div>
+            <div class="round-count">9명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">잘했던 점 — 이번 응대에서 효과적이었던 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">아쉬웠던 점 — 다음엔 개선하고 싶은 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">궁금했던 점 — 시디즈/제품/응대 관련 궁금한 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">다음 응대 때 시도할 것 — 구체적으로 하나만</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">3주차</div>
+            <div class="round-dates">11/05 ~ 11/12</div>
+            <div class="round-count">12명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">잘했던 점 — 이번 응대에서 효과적이었던 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">아쉬웠던 점 — 다음엔 개선하고 싶은 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">궁금했던 점 — 시디즈/제품/응대 관련 궁금한 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">다음 응대 때 시도할 것 — 구체적으로 하나만</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">4주차</div>
+            <div class="round-dates">11/12 ~ 11/19</div>
+            <div class="round-count">9명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">잘했던 점 — 이번 응대에서 효과적이었던 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">아쉬웠던 점 — 다음엔 개선하고 싶은 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">궁금했던 점 — 시디즈/제품/응대 관련 궁금한 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">다음 응대 때 시도할 것 — 구체적으로 하나만</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 25년 12월 -->
+    <div class="month-section">
+      <div class="month-header">
+        <span class="month-name">2025년 12월</span>
+        <span class="month-note">참여자 급증 (9명 → 27명) · 정례화 안착</span>
+      </div>
+      <div class="rounds-grid">
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">1주차</div>
+            <div class="round-dates">12/03 ~ 12/08</div>
+            <div class="round-count">27명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">요즘 응대를 하면서 집중하고 있는 것은?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">오늘의 응대 요약</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 잘했던 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 개선이 필요한 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">다음 응대 때 시도할 것 (구체적으로 1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q6</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">2주차</div>
+            <div class="round-dates">12/10 ~ 12/15</div>
+            <div class="round-count">27명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">요즘 응대를 하면서 집중하고 있는 것은?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">오늘의 응대 요약</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 잘했던 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 개선이 필요한 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">다음 응대 때 시도할 것 (구체적으로 1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q6</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">3주차</div>
+            <div class="round-dates">12/18 ~ 12/22</div>
+            <div class="round-count">25명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">요즘 응대를 하면서 집중하고 있는 것은?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">오늘의 응대 요약</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 잘했던 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 개선이 필요한 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">다음 응대 때 시도할 것 (구체적으로 1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q6</span><span class="q-tag cat-c">고객 이해</span><span class="q-text">응대하면서 발견하게 된 고객 니즈 <strong style="font-size:10px;color:var(--accent-warm)">★신규</strong></span></div>
+            <div class="question-row"><span class="q-num">Q7</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 26년 1월 -->
+    <div class="month-section">
+      <div class="month-header">
+        <span class="month-name">2026년 1월</span>
+        <span class="month-note">주간 이슈·질문 항목 도입 · 7문항 체계 완성</span>
+      </div>
+      <div class="rounds-grid">
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">1주차</div>
+            <div class="round-dates">01/08 ~ 01/13</div>
+            <div class="round-count">28명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">요즘 응대를 하면서 집중하고 있는 것은?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">주간 이슈·질문 (택배 납기, 제도 문의 등 — 주마다 다른 현안) <strong style="font-size:10px;color:var(--accent-warm)">★신규</strong></span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 잘했던 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 개선이 필요한 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">다음 응대 때 시도할 것 (구체적으로 1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q6</span><span class="q-tag cat-c">고객 이해</span><span class="q-text">응대하면서 발견하게 된 고객 니즈</span></div>
+            <div class="question-row"><span class="q-num">Q7</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">2주차</div>
+            <div class="round-dates">01/14 ~ 01/18</div>
+            <div class="round-count">29명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">요즘 응대를 하면서 집중하고 있는 것은?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">주간 현안 (예: 시디즈 브랜드명 의미 궁금 등)</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 잘했던 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 개선이 필요한 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">다음 응대 때 시도할 것 (구체적으로 1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q6</span><span class="q-tag cat-c">고객 이해</span><span class="q-text">응대하면서 발견하게 된 고객 니즈</span></div>
+            <div class="question-row"><span class="q-num">Q7</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">3주차</div>
+            <div class="round-dates">01/20 ~ 01/25</div>
+            <div class="round-count">26명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">요즘 응대를 하면서 집중하고 있는 것은?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">주간 현안 (예: QR쿠폰 환불 처리 방법 등)</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 잘했던 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 개선이 필요한 점 (1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">다음 응대 때 시도할 것 (구체적으로 1가지)</span></div>
+            <div class="question-row"><span class="q-num">Q6</span><span class="q-tag cat-c">고객 이해</span><span class="q-text">응대하면서 발견하게 된 고객 니즈</span></div>
+            <div class="question-row"><span class="q-num">Q7</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 26년 2월 -->
+    <div class="month-section">
+      <div class="month-header">
+        <span class="month-name">2026년 2월</span>
+        <span class="month-note">6문항 압축 운영 · 자유의견 포함 · 총 74건(오기입 포함 통합)</span>
+      </div>
+      <div class="rounds-grid">
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">1주차</div>
+            <div class="round-dates">02/05 ~ 02/09</div>
+            <div class="round-count">25명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">요즘 응대를 하면서 집중하고 있는 것은?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">잘했던 점</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">개선이 필요한 점 + 시도해보고 싶은 것</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-c">고객 이해</span><span class="q-text">응대하면서 발견하게 된 고객 니즈</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q6</span><span class="q-tag cat-w">관계·문화</span><span class="q-text">응대 관련 자유 의견</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">2주차</div>
+            <div class="round-dates">02/12 ~ 02/18</div>
+            <div class="round-count">28명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">요즘 응대를 하면서 집중하고 있는 것은?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">잘했던 점</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">개선이 필요한 점 + 시도해보고 싶은 것</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-c">고객 이해</span><span class="q-text">응대하면서 발견하게 된 고객 니즈</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+            <div class="question-row"><span class="q-num">Q6</span><span class="q-tag cat-w">관계·문화</span><span class="q-text">응대 관련 자유 의견</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">3주차</div>
+            <div class="round-dates">02/19 ~ 02/26</div>
+            <div class="round-count">25명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">요즘 응대를 하면서 집중하고 있는 것은?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">잘했던 점</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">개선이 필요한 점 + 시도해보고 싶은 것</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-c">고객 이해</span><span class="q-text">응대하면서 발견하게 된 고객 니즈</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것</span></div>
+            <div class="question-row"><span class="q-num">Q6</span><span class="q-tag cat-w">관계·문화</span><span class="q-text">응대 관련 자유 의견</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 26년 3월 -->
+    <div class="month-section">
+      <div class="month-header">
+        <span class="month-name">2026년 3월</span>
+        <span class="month-note">질문 패러다임 전환 — 개인 성장·동료 학습·문화 질문 대거 등장</span>
+      </div>
+      <div class="rounds-grid">
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">1주차</div>
+            <div class="round-dates">03/06 ~ 03/11</div>
+            <div class="round-count">26명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">내가 생각하는 응대 시 나의 강점은? (공유하고 싶은 노하우)</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">요즘 내가 매장에서 실행·시도해 보려고 하는 것은?</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">응대를 하면서 채워야 한다고 생각하는 부분은?</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-w">관계·문화</span><span class="q-text">스트레스를 풀기 위해 평소에 하는 것이 있으시면 알려주세요.</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">2주차</div>
+            <div class="round-dates">03/15 ~ 03/19</div>
+            <div class="round-count">25명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">일하면서 가장 성취를 느꼈던 순간은 언제인가요?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">응대를 하면서 가장 기억이 나는 손님이 있다면 알려주세요.</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">요즘 내가 매장에서 실행·시도해 보려고 하는 것은?</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">응대를 하면서 채워야 한다고 생각하는 부분은?</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">3주차</div>
+            <div class="round-dates">03/21 ~ 03/25</div>
+            <div class="round-count">29명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-w">관계·문화</span><span class="q-text">업무 중 지치거나 에너지가 떨어질 때, 나를 다시 웃게 만드는 사소한 즐거움이 있다면?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-w">관계·문화</span><span class="q-text">최근 동료의 응대를 보고 배우고 싶었거나 칭찬해주고 싶었던 점은?</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">고객의 매장 유입을 위해 실행해본 활동 혹은 계획하고 있는 활동</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-c">고객 이해</span><span class="q-text">고객이 직접 요청하지 않았음에도 내가 먼저 파악해 도움을 드렸던 상황</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">응대 관련 시디즈 브랜드/제품/서비스에 대해 궁금한 것 1가지</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 26년 4월 -->
+    <div class="month-section">
+      <div class="month-header">
+        <span class="month-name">2026년 4월</span>
+        <span class="month-note">외부 벤치마킹·솔직한 성찰 질문 도입 · 최대 참여 (31명)</span>
+      </div>
+      <div class="rounds-grid">
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">1주차</div>
+            <div class="round-dates">04/15 ~ 04/20</div>
+            <div class="round-count">31명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-w">관계·문화</span><span class="q-text">요즘 매장에서 가장 힘이 나도록 해주었던 고객의 한마디나 잠시 미소를 짓게 한 순간</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">최근에 스스로의 전문성을 위해서 노력하시는 것이 있다면?</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-c">고객 이해</span><span class="q-text">"본사에서 이건 꼭 해결해줬으면 좋겠다"고 느낀 고객의 니즈는?</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-c">고객 이해</span><span class="q-text">고객만의 방식으로 독특하게 제품을 활용(공간, 가구 조합 등)하는 사례나 제안</span></div>
+            <div class="question-row"><span class="q-num">Q5</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">시디즈 브랜드/제품에 대해 평소 궁금했던 점</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">2주차</div>
+            <div class="round-dates">04/22 ~ 04/27</div>
+            <div class="round-count">31명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">최근 방문했던 매장 중 좋은 경험을 했던 장소가 있다면 공유해주세요.</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">요즘 업무를 하면서 가장 필요로 하는 정보는 어떤 것이 있나요?</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">업무를 하면서 가장 협조를 많이 구해야 하는 사람은 누구인가요?</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">나름의 해결책을 제시했지만 고객에게 통하지 않았던 사례 — 솔직한 성찰</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 26년 5월 -->
+    <div class="month-section">
+      <div class="month-header">
+        <span class="month-name">2026년 5월</span>
+        <span class="month-note">주차 → 차수 명칭 변경 · 매장·브랜드 경험 중심 질문</span>
+      </div>
+      <div class="rounds-grid">
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">1차수</div>
+            <div class="round-dates">05/14 ~ 05/18</div>
+            <div class="round-count">29명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">이번 주의 업무를 한 줄로 표현한다면? 그리고 그렇게 정한 이유는?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-c">고객 이해</span><span class="q-text">현장에서 느낀 고객들의 반응 중, 시디즈라는 브랜드에 대해 가장 긍정적이었던 포인트</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">우리 매장만이 가진 특별한 분위기나 고객들의 성격 — 차별화 특징</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">2차수</div>
+            <div class="round-dates">05/21 ~ 05/26</div>
+            <div class="round-count">27명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">고객들을 응대할 때 가장 중요한 순간은 언제라고 생각하시나요? 그 순간을 어떻게 관리하시나요?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">고객들에게 좋은 경험을 주기 위해 혹은 판매를 확대하기 위해 스스로 시도하는 것</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-w">관계·문화</span><span class="q-text">일이나 일상이 권태로울 때 스스로를 리프레시 하는 방법은?</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 26년 6월 -->
+    <div class="month-section">
+      <div class="month-header">
+        <span class="month-name">2026년 6월</span>
+        <span class="month-note">매장 운영 실무 집중 · 2차수는 자유 반추 형식</span>
+      </div>
+      <div class="rounds-grid">
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">1차수</div>
+            <div class="round-dates">06/12 ~ 06/17</div>
+            <div class="round-count">28명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">간단하게 공유하고 싶은 매장에서의 업무 근황</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">매장에서 제품과 공간을 가꾸고 점검하는 루틴·방법들</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">고객에게 설명하기 어렵거나 모호하게 느껴지는 것 / 점검하고 싶은 업무 프로세스 (시공·AS 등)</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">스스로 서비스·응대력을 체크해 보는 방법</span></div>
+          </div>
+        </div>
+
+        <div class="round-card round-free">
+          <div class="round-meta">
+            <div class="round-label">2차수</div>
+            <div class="round-dates">06/20 ~ 06/24</div>
+            <div class="round-count">26명</div>
+          </div>
+          <div class="round-questions">
+            <div class="round-note">자유 반추 형식 — 번호 질문 없음. 지금까지의 응대회고노트를 다시 읽어보며 인상 깊었던 점, 배운 점, 앞으로의 다짐을 자유롭게 작성.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 26년 8월 -->
+    <div class="month-section">
+      <div class="month-header">
+        <span class="month-name">2026년 8월</span>
+        <span class="month-note">경험 공유 + 제품·도구 피드백 수집</span>
+      </div>
+      <div class="rounds-grid">
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">1차수</div>
+            <div class="round-dates">08/08 ~ 08/13</div>
+            <div class="round-count">26명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">최근 가장 기억나는 고객과의 응대 경험에 대해 알려주세요.</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">응대를 할 때 가장 많이 참고하는 자료는 무엇인가요? 어떻게 활용하고 계신가요?</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">요즘 업무를 할 때 가장 주안점을 두는 부분은 무엇인가요?</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">의자에 대해서 새롭게 궁금한 지식이 있으시다면 무엇인가요?</span></div>
+          </div>
+        </div>
+
+        <div class="round-card">
+          <div class="round-meta">
+            <div class="round-label">2차수</div>
+            <div class="round-dates">08/16 ~ 08/20</div>
+            <div class="round-count">27명</div>
+          </div>
+          <div class="round-questions">
+            <div class="question-row"><span class="q-num">Q1</span><span class="q-tag cat-g">개인 성장</span><span class="q-text">시디즈 매장 업무를 하면서 스스로 어떤 목표를 가지고 계신가요?</span></div>
+            <div class="question-row"><span class="q-num">Q2</span><span class="q-tag cat-r">응대 성찰</span><span class="q-text">매장에 오는 고객들을 응대할 때 가장 중요한 것은 무엇이라고 생각하시나요? 그 이유는?</span></div>
+            <div class="question-row"><span class="q-num">Q3</span><span class="q-tag cat-b">브랜드·제품</span><span class="q-text">모바일 카탈로그에 추가되었으면 하는 정보가 있다면 알려주세요.</span></div>
+            <div class="question-row"><span class="q-num">Q4</span><span class="q-tag cat-o">업무 운영</span><span class="q-text">매장에서의 업무를 효율적으로 진행하기 위해 자체적으로 진행하는 프로세스 소개</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+</div><!-- /page-body -->
+</div><!-- /serp-tab-analysis -->
+
+<!-- 내 회고 보기 탭 -->
+<div id="serp-tab-mine" class="serp-tab-pane">
+  <div class="serp-my-wrap">
+    <!-- 필터 바 -->
+    <div class="serp-my-filter-bar">
+      <select class="serp-my-select" id="serp-filter-store" onchange="serpMyFilterStore(this.value)">
+        <option value="">전체 매장</option>
+      </select>
+      <select class="serp-my-select" id="serp-filter-status" onchange="serpMyFilterStatus(this.value)">
+        <option value="all">전체</option>
+        <option value="active">현직</option>
+        <option value="resigned">퇴직자만</option>
+      </select>
+      <input class="serp-my-search" id="serp-filter-name" type="text"
+             placeholder="이름 검색"
+             oninput="serpMyFilterName(this.value)">
+    </div>
+    <!-- 매장별 SE 그리드 -->
+    <div id="serp-my-grid"><div class="my-loading">불러오는 중…</div></div>
+    <!-- 회고 카드 영역 -->
+    <div id="serp-my-cards"></div>
+  </div>
+</div>
+
+    </div><!-- /panel-serp -->
   </main>
 </div>
+
+<!-- ── SERP 내 회고 JS ── -->
+<script>
+(function(){
+  /* 상태 */
+  var _members = [];
+  var _countMap = {};   /* {name: count} */
+  var _filterStore = '';
+  var _filterStatus = 'all'; /* 'all' | 'active' | 'resigned' */
+  var _filterName = '';
+  var _selectedChip = null;
+
+  /* XSS 방지 */
+  window.serpMyEsc = function(str) {
+    if (str == null) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  };
+
+  /* 탭 전환 */
+  window.serpMyTab = function(tab) {
+    document.querySelectorAll('#panel-serp .serp-tab-pane').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('#panel-serp .serp-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById('serp-tab-' + tab).classList.add('active');
+    document.getElementById('serp-tab-btn-' + tab).classList.add('active');
+    if (tab === 'mine' && !window.serpMyInited) serpMyInit();
+  };
+
+  window.serpMyInited = false;
+
+  /* 초기 데이터 로드 */
+  window.serpMyInit = async function() {
+    if (!window.sb) {
+      var g = document.getElementById('serp-my-grid');
+      if (g) g.innerHTML = '<div class="my-empty">DB 연결 대기 중입니다. 잠시 후 탭을 다시 눌러 주세요.</div>';
+      return;
+    }
+    var grid = document.getElementById('serp-my-grid');
+    if (grid) grid.innerHTML = '<div class="my-loading">불러오는 중…</div>';
+
+    try {
+      /* 1. sidiz_members 전체 */
+      var memRes = await window.sb.from('sidiz_members').select('*').order('store').order('name');
+      _members = memRes.data || [];
+
+      /* 2. serp_notes 작성자별 집계 (클라이언트 측 GROUP BY) */
+      var notesRes = await window.sb.from('serp_notes').select('작성자');
+      _countMap = {};
+      (notesRes.data || []).forEach(function(r) {
+        var n = r['작성자'];
+        if (n) _countMap[n] = (_countMap[n] || 0) + 1;
+      });
+
+      /* 3. 매장 드롭다운 채우기 */
+      var stores = [];
+      _members.forEach(function(m){ if (m.store && stores.indexOf(m.store) === -1) stores.push(m.store); });
+      stores.sort();
+      var sel = document.getElementById('serp-filter-store');
+      if (sel) {
+        sel.innerHTML = '<option value="">전체 매장</option>' +
+          stores.map(function(s){ return '<option value="' + serpMyEsc(s) + '">' + serpMyEsc(s) + '</option>'; }).join('');
+      }
+
+      window.serpMyInited = true;
+      serpMyRenderGrid();
+    } catch(e) {
+      console.error('serpMyInit 오류', e);
+      if (grid) grid.innerHTML = '<div class="my-empty">데이터 불러오기에 실패했습니다.</div>';
+    }
+  };
+
+  /* 필터 핸들러 */
+  window.serpMyFilterStore = function(val) { _filterStore = val; serpMyRenderGrid(); };
+  window.serpMyFilterStatus = function(val) { _filterStatus = val; serpMyRenderGrid(); };
+  window.serpMyFilterName = function(val) { _filterName = val.trim(); serpMyRenderGrid(); };
+
+  /* 그리드 렌더링 */
+  window.serpMyRenderGrid = function() {
+    var grid = document.getElementById('serp-my-grid');
+    if (!grid) return;
+
+    /* 필터 적용 */
+    var filtered = _members.filter(function(m) {
+      if (_filterStore && m.store !== _filterStore) return false;
+      if (_filterStatus === 'active' && m.resigned) return false;
+      if (_filterStatus === 'resigned' && !m.resigned) return false;
+      if (_filterName && (m.name || '').indexOf(_filterName) === -1) return false;
+      return true;
+    });
+
+    /* 매장별 그룹 */
+    var storeOrder = [];
+    var storeMap = {};
+    filtered.forEach(function(m) {
+      var s = m.store || '미지정';
+      if (!storeMap[s]) { storeMap[s] = []; storeOrder.push(s); }
+      storeMap[s].push(m);
+    });
+
+    /* members에 없는 작성자 (기타) */
+    var memberNameSet = {};
+    _members.forEach(function(m){ if (m.name) memberNameSet[m.name] = true; });
+    var extraAuthors = Object.keys(_countMap).filter(function(n){ return !memberNameSet[n]; });
+    if (_filterName) extraAuthors = extraAuthors.filter(function(n){ return n.indexOf(_filterName) !== -1; });
+
+    var html = '';
+    storeOrder.forEach(function(store) {
+      html += '<div class="serp-store-section"><div class="serp-store-heading">' + serpMyEsc(store) + '</div><div class="serp-chip-grid">';
+      storeMap[store].forEach(function(m) {
+        var cnt = _countMap[m.name] || 0;
+        var isResigned = !!m.resigned;
+        var chipCls = isResigned ? 'serp-chip serp-chip-resigned' : (cnt > 0 ? 'serp-chip serp-chip-active' : 'serp-chip serp-chip-inactive');
+        if (_selectedChip === m.name) chipCls += ' serp-chip-selected';
+        var badge = cnt > 0 ? ' <span class="serp-chip-badge">' + cnt + '</span>' : '';
+        html += '<button class="' + chipCls + '" data-sname="' + serpMyEsc(m.name) + '" onclick="serpMySelectChip(this.dataset.sname)">' + serpMyEsc(m.name) + badge + '</button>';
+      });
+      html += '</div></div>';
+    });
+
+    /* 기타 섹션 */
+    if (extraAuthors.length > 0 && !_filterStore && _filterStatus !== 'resigned') {
+      html += '<div class="serp-store-section"><div class="serp-store-heading serp-store-extra">기타 (회원 목록 없음)</div><div class="serp-chip-grid">';
+      extraAuthors.forEach(function(n) {
+        var chipCls = 'serp-chip serp-chip-active';
+        if (_selectedChip === n) chipCls += ' serp-chip-selected';
+        var cnt = _countMap[n] || 0;
+        var badge = cnt > 0 ? ' <span class="serp-chip-badge">' + cnt + '</span>' : '';
+        html += '<button class="' + chipCls + '" data-sname="' + serpMyEsc(n) + '" onclick="serpMySelectChip(this.dataset.sname)">' + serpMyEsc(n) + badge + '</button>';
+      });
+      html += '</div></div>';
+    }
+
+    if (!html) html = '<div class="my-empty">조건에 맞는 SE가 없습니다.</div>';
+    grid.innerHTML = html;
+  };
+
+  /* 칩 클릭 → 회고 카드 로드 */
+  window.serpMySelectChip = async function(name) {
+    _selectedChip = name;
+    serpMyRenderGrid(); /* 선택 강조 갱신 */
+
+    var cardsArea = document.getElementById('serp-my-cards');
+    if (!cardsArea) return;
+    cardsArea.innerHTML = '<div class="my-loading">불러오는 중…</div>';
+    cardsArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    if (!window.sb) {
+      cardsArea.innerHTML = '<div class="my-empty">DB 연결이 필요합니다.</div>';
+      return;
+    }
+
+    try {
+      var res = await window.sb
+        .from('serp_notes')
+        .select('*')
+        .eq('작성자', name)
+        .order('작성일', { ascending: false });
+
+      if (res.error) throw res.error;
+      var data = res.data || [];
+      var cnt = data.length;
+
+      var allDates = data.map(function(r){ return r['작성일']; }).filter(Boolean).slice().sort();
+      var firstDate = allDates.length ? allDates[0].slice(0,7).replace('-','.') : '-';
+      var lastDate  = allDates.length ? allDates[allDates.length-1].slice(0,7).replace('-','.') : '-';
+
+      var html = '<div class="serp-cards-area"><div class="serp-cards-hdr">'
+        + '<span class="serp-cards-name">' + serpMyEsc(name) + '</span>'
+        + '<span class="serp-cards-meta">총 ' + cnt + '회 참여 · 첫 참여 ' + serpMyEsc(firstDate) + ' · 최근 참여 ' + serpMyEsc(lastDate) + '</span>'
+        + '</div>';
+
+      if (cnt === 0) {
+        html += '<div class="my-empty">회고 기록이 없습니다.</div>';
+      } else {
+        data.forEach(function(row) {
+          var mon  = row['월'] || '';
+          var week = row['주차'] || '';
+          var date = row['작성일'] ? row['작성일'].slice(0,10) : '';
+          var metaParts = [mon, week, date].filter(Boolean);
+
+          var qaHtml = '';
+          ['q1','q2','q3','q4','q5','q6'].forEach(function(q) {
+            var qText = row[q + '_q'];
+            var aText = row[q + '_a'];
+            if (qText || aText) {
+              qaHtml += '<div class="serp-qa-item">'
+                + (qText ? '<div class="serp-qa-q">' + serpMyEsc(qText) + '</div>' : '')
+                + (aText ? '<div class="serp-qa-a">' + serpMyEsc(aText) + '</div>' : '<div class="serp-qa-a" style="color:var(--dim)">—</div>')
+                + '</div>';
+            }
+          });
+
+          html += '<div class="serp-refl-card">'
+            + '<div class="serp-refl-card-hdr">' + serpMyEsc(metaParts.join(' · ') || '날짜 정보 없음') + '</div>'
+            + '<div class="serp-refl-card-body">' + (qaHtml || '<div style="color:var(--text-muted);font-size:13px">내용 없음</div>') + '</div>'
+            + '</div>';
+        });
+      }
+
+      html += '</div>';
+      cardsArea.innerHTML = html;
+    } catch(e) {
+      console.error('serp 회고 로드 오류', e);
+      cardsArea.innerHTML = '<div class="my-empty">조회 중 오류가 발생했습니다.</div>';
+    }
+  };
+})();
+</script>
 
 <!-- ── 이달의 수상자 패널 ── -->
 <script>
@@ -2442,6 +3396,11 @@ function goExaminee() {
   loadIntro(first);
   showView('intro');
   showPreviewBanner(true);
+}
+
+function goSERP() {
+  showView('admin');
+  nav('serp', false);
 }
 
 function exitPreview() {
@@ -7919,9 +8878,19 @@ function toggleTheme() {
   document.getElementById('theme-icon').textContent  = isLight ? '🌙' : '☀️';
   document.getElementById('theme-label').textContent = isLight ? '다크 모드' : '라이트 모드';
 }
-// 저장된 테마 복원
+// 기존 'light' 저장값을 'dark'로 간주하지 않도록 초기화 (구버전 호환)
+if (localStorage.getItem('sitforest_theme') === null) {
+  localStorage.setItem('sitforest_theme', 'light');
+}
+// 저장된 테마 복원 (기본: 라이트 모드)
 (function(){
-  if (localStorage.getItem('sitforest_theme') === 'light') {
+  const saved = localStorage.getItem('sitforest_theme');
+  if (saved === 'dark') {
+    // 다크 모드: light-mode 클래스 없음
+    document.getElementById('theme-icon').textContent  = '☀️';
+    document.getElementById('theme-label').textContent = '라이트 모드';
+  } else {
+    // 기본값 라이트 모드
     document.body.classList.add('light-mode');
     document.getElementById('theme-icon').textContent  = '🌙';
     document.getElementById('theme-label').textContent = '다크 모드';
